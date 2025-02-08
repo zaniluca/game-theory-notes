@@ -1,0 +1,333 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Repeated Games}
+\begin{example}
+    Let's introduce this example that will be used throughout the chapter.
+
+    \[
+        \begin{pmatrix}
+            (6,6)   & (0,10)  & (-2,-2) \\
+            (10,0)  & (1,1)   & (-1,-1) \\
+            (-2,-2) & (-1,-1) & (-2,-2)
+        \end{pmatrix}
+    \]
+\end{example}
+There is an equilibrium in strictly dominated strategies, i.e. $(1,1)$.
+
+Suppose the game is played once a day for $N$ days, i.e. it is repeated $N$ times. Does the solution of the game change at all?
+
+Playing all days the strictly dominant strategy for both, with outcome $(1,1)$, is an
+obvious equilibrium of the repeated game.
+
+Are there other Nash equilibria? Can the more appealing, socially efficient, outcome $(6,6)$ be obtained by the players? We shall show that, for every $a > 0$, if the game lasts for enough days (i.e. if $N$ is sufficiently big), both players can get at least $6-a$ on average.
+
+Suppose the game is played N days. Consider the following symmetric strategy
+\begin{itemize}
+    \item Player one (two) plays the first row (column) at the first $N-k$ days and the second row (column) in the last $k$ days, if the second (first) player uses the same strategy
+    \item Otherwise, if at one day the second (first) deviates, from that stage on player one (two) plays the third row (column)
+\end{itemize}
+In other words, the players collaborate for $N-k$ days, and then they both play their strictly dominant strategy for the remaining $k$ days.
+
+In case one deviates, the other shifts to the third strategy, for the rest of time.
+
+\begin{proof}[The collaborative strategy is a Nash Equilibrium]
+    Under the strategy profile a player gets:
+    \[
+        \frac{(N-k)6 +k1}{N}
+    \]
+    \textit{Divide by N to get the average payoff per day.}
+    By deviating the most convenient day, i.e. day $N-k$, a player gets:
+    \[
+        \frac{(N-k-1)6 + 10 +k(-1)}{N}
+    \]
+    Thus the strategy profile is a \gls{NEp} if and only if:
+    \[
+        \frac{(N-k)6 +k1}{N} \geq \frac{(N-k-1)6 + 10 +k(-1)}{N}
+    \]
+    That is true provided that $k \geq 2$.
+
+    The payoffs at the \gls{NEp} are:
+    \[
+        \frac{(N-k)6 +k1}{N}
+    \]
+    which for every $k$ is such that
+    \[
+        \lim_{N \to \infty} \frac{(N-k)6 +k1}{N} = 6
+    \]
+    Therefore, on average the players can get at least $6-a$ each per day (with a being a small number), if they play a sufficiently large number of days.
+\end{proof}
+
+\begin{remark}\
+    \begin{itemize}
+        \item When a game is repeated many times, collaboration between the players, even if dominated in the one shot game, can be based on rationality.
+        \item The (common) strategy of the \gls{NEp} has a weakness: it is based on a mutual threat of the players, which is not completely credible since by punishing the player who deviates from the agreement the other will also damage herself.
+        \item In general, the number of the \gls{NEp} in the repetition of the game is very large
+    \end{itemize}
+\end{remark}
+
+\section{Infinite repetitions of the game}
+A stage game (usually a finite game in strategic form) is played with infinite horizon (e.g. for infinite days) by the players.
+
+\begin{center}
+    \begin{tikzpicture}
+        \tikzstyle{solid node}=[circle,draw,inner sep=1.5,fill=black]
+        \tikzstyle{level 1}=[level distance=10mm,sibling distance=50mm]
+        \tikzstyle{level 2}=[level distance=10mm,sibling distance=20mm]
+        \tikzstyle{level 3}=[level distance=10mm,sibling distance=15mm]
+
+        % Root node and main tree structure
+        \node(0)[solid node]{}
+        child{node[solid node](n1l){}
+                child{node[solid node](n2ll){}
+                        child{node[solid node](l1){}}
+                        child{node[solid node](l2){}}
+                        edge from parent
+                    }
+                child{node[solid node](n2lr){}
+                        child{node[solid node](l3){}}
+                        child{node[solid node](l4){}}
+                        edge from parent
+                    }
+                edge from parent
+            }
+        child{node[solid node](n1r){}
+                child{node[solid node](n2rl){}
+                        child{node[solid node](l5){}}
+                        child{node[solid node](l6){}}
+                        edge from parent
+                    }
+                child{node[solid node](n2rr){}
+                        child{node[solid node](l7){}}
+                        child{node[solid node](l8){}}
+                        edge from parent
+                    }
+                edge from parent
+            };
+
+        % Information sets (dashed lines)
+        \draw[dashed] (n1l) -- (n1r);
+        \draw[dashed] (n2ll) -- (n2lr);
+        \draw[dashed] (n2rl) -- (n2rr);
+
+        % Add vertical dots below leaf nodes
+        \foreach \i in {l1,l2,l3,l4,l5,l6,l7,l8}{
+                \node[below=1mm of \i] {$\vdots$};
+            }
+    \end{tikzpicture}
+\end{center}
+
+Assume that at each stage $\tau$, the players know which outcome has been selected at stage $\tau-1$. Thus the \textbf{strategy} for a player is
+\[
+    s = s(\tau) \quad \tau = 0,1,2, \ldots
+\]
+\begin{note}
+    A stage is an entire game, not just a single turn.
+\end{note}
+where, for each $\tau$, $s(\tau)$ is a specification of moves of the stage game, which is \textbf{in general a function of the past choices of the players}
+
+\begin{example}
+    In the prisoner dilemma repeated infinitely many times, a possibile strategy $s = (s(0), s(1))$ could be:
+    \begin{itemize}
+        \item $s(0)$ do not confess
+        \item $s(1)$ do not confess if the other player did not confess at stage zero, otherwise confess
+    \end{itemize}
+\end{example}
+
+For what concerns the \textbf{payoffs}, in general it is not possible to sum payoffs obtained at each stage since the sum will be infinite for $\tau = \infty$.
+
+There are different possible choices to construct the payoff function. One standard choice is to use a discount factor $\delta$ such that
+\[
+    0 < \delta < 1
+\]
+So, we can write the \textbf{utility of player $i$} as:
+\[
+    u_i(s,i) = (1-\delta) \sum_{\tau = 0}^{\infty} \delta^\tau u_i(s(\tau),t(\tau))
+\]
+where $u_i (s(\tau),t(\tau))$ is the stage-game payoff of player $i$ at time $\tau$ given strategy profile $(s(\tau),t(\tau))$.
+
+\begin{note}
+    Moves made later in the game contribute less and less to the utility, for example with $\delta = 0.25$:
+    \[
+        \delta^1 = 0.25 \quad \delta^2 = 0.0625 \quad \delta^3 = 0.015625 \quad \ldots
+    \]
+\end{note}
+
+$(1-\delta)$ is a normalization factor: if $u_i (s(\tau),t(\tau)) = a$ (so the payoff is constant and doesn't depend on the stage $\tau$), then:
+\[
+    u_i (s,t) = a
+\]
+since $\sum_{\tau = 0}^{\infty} \delta^\tau = \frac{1}{1-\delta}$.
+
+\begin{definition}[Threat values]
+    For the bimatrix game $(A,B)$ representing the stage game
+    \begin{equation*}
+        \underline{v}_1 = \min_j \max_i a_{ij} \qquad \underline{v}_2 = \min_i \max_j b_{ij}
+    \end{equation*}
+    Are called the threat values of Player 1 and Player 2 respectively.
+\end{definition}
+Suppose that, e.g., $\underline{v}_1$ is obtained with $j = \overline{j}$. If Pl2 wants to punish Pl1, $\underline{v}_1$ is the highest utility Pl1 can get if Pl2 uses $\overline{j}$.
+
+\begin{theorem}[The Folk Theorem]
+    Suppose a bimatrix game $(A,B)$ is given, For every feasible payoff vector $v = (v_1,v_2) = (a_{\overline{i} \overline{j}}, b_{\overline{i} \overline{j}})$ such that $v_i > \underbar{v}_i$ $i =1,2$, there exists $\overline{\delta} < 1$ such that for all $\delta > \overline{\delta}$ there is a Nash Equilibrium of the repeated game with discount factor $\delta$ that yields the payoff vector $v$.
+\end{theorem}
+
+\begin{proof}
+    Define the following strategy $s$: \begin{quote}
+        Play the strategy yielding $v$ at any stage, unless the opponent deviates at time t. In the latter case play the threat strategy from the stage $t + 1$ onwards
+    \end{quote}
+    One thus needs to prove that:
+    \begin{itemize}
+        \item $s$ provides utility vector $v$
+        \item $s$ is a Nash equilibrium for all $\delta$ close to 1
+    \end{itemize}
+    At time $\tau = t$ player $i$ could gain at most $\max_{i,j} a_{ij}$. Denote by $s_t$ the strategy of deviating at time $t$. So, if e.g. Player 1 deviates, after $t$ she will gain at most $v_1$. Hence, her payoff is such that:
+    \begin{align*}
+        u_1(s_t) \leq & (1-\delta) \left( \sum_{\tau = 0}^{t-1} \delta^\tau v_1 + \delta^t \max_{i,j} a_{ij} + \sum_{\tau = t+1}^{\infty} \delta^\tau \underline{v}_1 \right) = \\
+                      & = (1-\delta^t) v_1 + (1-\delta)\delta^t \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1
+    \end{align*}
+    Instead with startegy profile $s$: $u_1(s) =(1-\delta)\sum_{\tau=0}^{\infty} v_1 = v_1$. We need to prove that $u_1(s) \geq u_1(s_t)$, that is:
+    \begin{equation*}
+        v_1 \geq (1-\delta^t) v_1 + (1-\delta)\delta^t \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1
+    \end{equation*}
+    \begin{align*}
+        (1-\delta^t)v_1 + \delta^t(1-\delta)\max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1 & \leq v_1                     \\
+        \delta^t(1-\delta)\max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1                   & \leq \delta^t v_1            \\
+        (1-\delta)\max_{i,j} a_{ij} + \delta \underline{v}_1                                 & \leq v_1                     \\
+        \delta(\max_{i,j} a_{ij} - \underline{v}_1)                                          & \geq \max_{i,j} a_{ij} - v_1
+    \end{align*}
+    By properly setting $\underline{\delta}$, we conclude that:
+    \begin{equation*}
+        0 < \underline{\delta_1} = \frac{\max_{i,j} a_{ij} - v_1}{\max_{i,j} a_{ij} - \underline{v}_1} < 1
+    \end{equation*}
+    Thus by setting:
+    \begin{equation*}
+        \underline{\delta_1} = \frac{\max_{i,j} a_{ij} - v_1}{\max_{i,j} a_{ij} - \underline{v}_1} \qquad \underline{\delta_2} = \frac{\max_{i,j} b_{ij} - v_2}{\max_{i,j} b_{ij} - \underline{v}_2}
+    \end{equation*}
+    The theorem is proved with $\underline{\delta} = \max \{ \underline{\delta_1}, \underline{\delta_2} \}$.
+\end{proof}
+
+\section{Correlated Equilibria}
+
+Let's introduce the concept of correlated equilibrium with a reference example:
+\begin{example} Given this game:
+    \[
+        \begin{pmatrix}
+            (6,2) & (2,7) \\
+            (7,2) & (0,0)
+        \end{pmatrix}
+    \]
+    There are 3 \gls{NEp}:
+    \begin{enumerate}
+        \item $[(0,1), (1,0)]$ with outcome $(2,7)$
+        \item $[(1,0), (0,1)]$ with outcome $(7,2)$
+        \item $\left[\left(\frac{2}{3}, \frac{1}{3}\right), \left(\frac{2}{3},\frac{1}{3}\right)\right]$ with outcome $\left(\frac{14}{3}, \frac{14}{3}\right)$
+    \end{enumerate}
+\end{example}
+
+Consider the following probability distribution over the outcomes:
+\[
+    \begin{pmatrix}
+        \nicefrac{1}{3} & \nicefrac{1}{3} \\
+        \nicefrac{1}{3} & 0
+    \end{pmatrix}
+\]
+This provides a better outcome for both players, that is $\frac{15}{3}$ , than the mixed \gls{NEp}.
+
+But how is it possible to convince the players to agree on this? Suppose the players agree on the following mechanism:
+\begin{quote}
+    An external entity, like an arbitrator, makes a random choice on the outcomes
+    according to the probabilities assigned in the table, and tells each player privately
+    what she/he should do.
+\end{quote}
+
+\textbf{Aumann's idea for self-enforcing agreement:} given such private information, the
+players do not have incentive to choose another strategy!
+
+\begin{example}
+    Let's consider the reference example above and let's show that, given that an arbitrator tells the players what to play there is no incentive to deviate from the strategy dictated by the mentioned probability distribution.
+    \begin{enumerate}
+        \item The random choice selects outcome $(7,2)$. Pl1 is told to play second row, Pl2 first column. Pl1 now knows that Pl2 is told to play first column since the second one has probability $0$: she does not deviate since the outcome is a \gls{NEp}. Pl2 knows that the probability Pl1 is told to play first row is $\frac{1}{2}$ , and the same for second row. so that his expected value is $\frac{1}{2}(6 + 2)$. If he deviates his expected value is $\frac{1}{2}(7 + 0)$: hence \underline{no interest to deviate for both}.
+        \item The random choice selects outcome $(6,6)$. Pl1 is told to play first row, Pl2 first column. Both players know that the other player will play the two strategies with the same probability. Thus the expected value following the suggestion is $\frac{1}{2}(6 + 2)$. If the player deviates, the expected value is $\frac{1}{2}(7 + 0)$: hence \underline{no interest to deviate for both}.
+        \item The random choice selects outcome $(2,7)$. Just as in 1 but interchanging the role of the players: hence \underline{no interest to deviate for both}.
+    \end{enumerate}
+    The proposed probability distribution over the outcomes is accepted by all players!
+\end{example}
+
+\begin{definition}[Correlated equilibrium]
+    Given the game $(A,B) = (a_{ij}, b_{ij})$ with $i = 1, \ldots, n$ and $j = 1, \ldots, m$, let $I = \{1, \ldots, n\}, J = \{1, \ldots, m\}$ and $X = I \times J$. A correlated equilibrium is a probability distribution $p = (p_{ij})$ on $X$ such that, for all $\overline{i} \in I$:
+    \begin{equation*}
+        \sum_{j=1}^{m} p_{\overline{i}j} a_{\overline{i}j} \geq \sum_{j=1}^{m} p_{\overline{i}j} a_{ij} \qquad \forall i \in I
+    \end{equation*}
+    and for all $\overline{j} \in J$:
+    \begin{equation*}
+        \sum_{i=1}^{n} p_{i\overline{j}} b_{i\overline{j}} \geq \sum_{i=1}^{n} p_{i\overline{j}} b_{ij} \qquad \forall j \in J
+    \end{equation*}
+\end{definition}
+
+\begin{example}
+    Let's apply the definition to the reference example and try to find a correlated equilibrium.
+    \[
+        \begin{pmatrix}
+            (6,2) & (2,7) \\
+            (7,2) & (0,0)
+        \end{pmatrix}
+        \qquad
+        P = \begin{pmatrix}
+            x_1 & x_2 \\
+            x_3 & x_4
+        \end{pmatrix}
+    \]
+    \[
+        \begin{cases}
+            6x_1 + 2x_2 \geq 7 x_1    \\
+            7x_3 \geq 6x_3 + 2x_4     \\
+            6x_1 + 2x_3 \geq 7 x_1    \\
+            7x_2 \geq 6x_2 + 2x_4     \\
+            x_1 + x_2 + x_3 + x_4 = 1 \\
+            x_1, x_2, x_3, x_4 \geq 0
+        \end{cases}
+    \]
+    By solving the system we get: $x_1 = \frac{1}{3}, x_2 = \frac{1}{3}, x_3 = \frac{1}{3}, x_4 = 0$.
+\end{example}
+
+The set of the correlated equilibria of a finite game is nonempty because...
+\begin{theorem}
+    A \gls{NEp} profile generates a Correlated equilibrium
+\end{theorem}
+
+And the existence of a \gls{NEp} is guaranteed by Nash's Theorem.
+
+Given the \gls{NEp} $(\overline{x}, \overline{y})$, the probability distribution on the outcome matrix is
+\[
+    p = (p_{ij})
+\]
+Where each element $p_{ij} = \overline{x}_i \overline{y}_j$.
+\begin{proof}
+    Given the \gls{NEp} $(\overline{x}, \overline{y})$, let $p_{ij} = \overline{x}_i \overline{y}_j$. Then we need to prove that:
+    \begin{equation*}
+        \sum_{j=1}^{m} \overline{x}_{\overline{i}} \overline{y}_j a_{\overline{i}j} \geq \sum_{j=1}^{m} \overline{x}_{\overline{i}} \overline{y}_j a_{ij} \qquad \forall i \in I
+    \end{equation*}
+    This is obviouse for $\overline{x}_{\overline{i}} = 0$. If $\overline{x}_{\overline{i}} > 0$, then:
+    \begin{equation*}
+        \sum_{j=1}^{m} \overline{y}_j a_{\overline{i}j} \geq \sum_{j=1}^{m} \overline{y}_j a_{ij} \qquad \forall i \in I
+    \end{equation*}
+    The inequality holds since the pure strategy $\overline{i}$ is played with positive probability, hence  $\overline{i}$ must be (one of) the best reaction(s) to $\overline{y}$
+\end{proof}
+\begin{theorem}
+    The set of the correlated equilibria of a finite game is a nonempty convex polytope.
+\end{theorem}
+\begin{proof}
+    Remember that a convex polytope is a closed bounded convex set which is the \textbf{smallest convex set containing a finite number of points}. The set of the correlated equilibria is the solution set of a system of $n^2 + m^2$ linear inequalities (where $n$,$m$ are the number of the pure strategies of the players), called \textbf{incentive constraints}, plus the conditions of being a probability distribution, that is $\sum_{i=1}^{n} \sum_{j=1}^{m} p_{ij} = 1$ and $p_{ij} \geq 0$ for every $i,j$.
+\end{proof}
+\begin{proposition}
+    If a row $\overline{i}$ is \textbf{strictly dominated}, then $p_{\overline{i}j} = 0$ for every $j$
+\end{proposition}
+\begin{proof}
+    Suppose $\overline{i}$ is strictly dominated by $i$ ($a_{ij} > a_{\overline{i}j}$ $\forall j$) . Then:
+    \begin{equation*}
+        \sum_{j=1}^{m} p_{\overline{i}j} \underbrace{(a_{\overline{i}j}  - a_{ij})}_{\text{always < 0}} \geq 0
+    \end{equation*}
+    It must be that $p_{\overline{i}j} = 0$ for every $j$.
+\end{proof}
+\end{document}

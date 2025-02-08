@@ -1,0 +1,210 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Basics of Game Theory: Rationality}
+In the real world we may find different types of situations which require decision making. In some cases, the decision is made by a single individual, in other cases by a group of individuals:
+
+\textbf{Variants with one decision maker}:
+\begin{itemize}
+    \item Scalar optimization
+    \item Vector optimization
+    \item Deterministic optimization
+    \item Stochastic optimization
+    \item \ldots
+\end{itemize}
+
+\textbf{Variants with multiple decision makers}:
+\begin{itemize}
+    \item \underline{Game Theory}
+    \item Social choice
+    \item Mechanism design
+    \item Machine learning
+    \item \ldots
+\end{itemize}
+It is much easier to determine what is the best choice in a decision process when there is only one decision maker. But what about games with multiple players? In this course we'll focus on \textbf{Game Theory}, but what is a game?
+
+\begin{example}\
+    \begin{itemize}
+        \item Chess, checkers, \ldots
+        \item Two people bargaining how to divide a pie
+        \item A burglar and a guard
+        \item Parties in a parliament
+        \item \ldots
+    \end{itemize}
+\end{example}
+
+Games are \textbf{efficient models} for an enormous amount of everyday life situations.
+
+A game is a process consisting in:
+\begin{enumerate}
+    \item A set of players (at least two)
+    \item An initial situation
+    \item Rules that the players must follow
+    \item All possible final situations
+    \item The preferences of all players on the set of the final situations
+\end{enumerate}
+
+Players are supposed to be \textbf{rational} and \textbf{selfish}. Selfish means that the  players only care about \textbf{their own} preferences with respect to the outcomes of the game.
+
+This is not an ethical problem, but a mathematical assumption. In fact, we need it to define what is the meaning of a rational choice.
+
+Rationality is a much more involved issue.
+
+\begin{definition}[Preference relation]
+    Let $X$ be a set. A preference relation on $X$ is a binary relation $\succeq$ on $X$ such that for all $x, y, z \in X$:
+    \begin{enumerate}
+        \item \textbf{Reflexivity}: $x \succeq x$
+        \item \textbf{Completeness}: $x \succeq y$ or $y \succeq x$
+        \item \textbf{Transitivity}: $x \succeq y$ and $y \succeq z$ implies $x \succeq z$
+    \end{enumerate}
+\end{definition}
+
+\section{Rationality Assumptions}
+
+The \textbf{first rationality assumption} is: \textit{The players are able to provide a preference relation over the outcomes of the game, and the order must be consistent}.
+
+\begin{definition}[Utility function]
+    Let $\succeq$ be a preference relation on $X$. A utility function representing $\succeq$ is a function $u: X \to \mathbb{R}$ such that for all $x, y \in X$:
+    \[
+        x \succeq y \iff u(x) \geq u(y).
+    \]
+\end{definition}
+\begin{note}\
+    \begin{itemize}
+        \item A utility function may not exist in particular cases, however it exists in the general setting, specifically when X is a finite set.
+
+        \item If a utility function exists, then there exist infinitely many utility functions, given by any strictly increasing transformation of the former.
+
+        \item To player $i$ there is assigned a set $X_i$ , representing all the choice available to her. Hence, the set $X= x X_i$ over which $u$ is defined comprises the possible choices of all players.
+    \end{itemize}
+\end{note}
+
+The \textbf{second rationality assumption} reads: \textit{The players are able to provide a utility function representing their preferences relations}.
+
+\begin{example}[Allais experiment 1]
+    Here is an example of a popular experiment, called the Allais paradox. Consider the following two lotteries:
+
+    Alternative A:
+    \begin{center}
+        \begin{tabular}{|r|c|}
+            \hline
+            gain & probability \\\hline
+            2500 & 33\%        \\\hline
+            2400 & 66\%        \\\hline
+            0    & 1\%         \\\hline
+        \end{tabular}
+    \end{center}
+    Alternative B:
+    \begin{center}
+        \begin{tabular}{|r|c|}
+            \hline
+            gain & probability \\\hline
+            2500 & 0\%         \\\hline
+            2400 & 100\%       \\\hline
+            0    & 0\%         \\\hline
+        \end{tabular}
+    \end{center}
+    In a sample of 72 people exposed to this experiment, 82\% of them decided to play the Lottery B (preference for certainty of risk-averse people).
+
+    Based on expected utilities, this is rational if $u(2400) >\frac{33}{100} u(2500) + \frac{66}{100} u(2400)$ which means $\frac{34}{100} u(2400) > \frac{33}{100} u(2500)$
+\end{example}
+\begin{example}[Allais experiment 2]
+    Here is another example of the Allais paradox. Consider the following two lotteries:
+
+    Alternative C:
+    \begin{center}
+        \begin{tabular}{|r|c|}
+            \hline
+            gain & probability \\\hline
+            2500 & 33\%        \\\hline
+            0    & 67\%        \\\hline
+        \end{tabular}
+    \end{center}
+    Alternative D:
+    \begin{center}
+        \begin{tabular}{|r|c|}
+            \hline
+            gain & probability \\\hline
+            2400 & 34\%        \\\hline
+            0    & 66\%        \\\hline
+        \end{tabular}
+    \end{center}
+    In the same sample of people interviewed, 83\% of them selected lottery C (preference for winning in the case of low probability).
+
+    Yet this is rational if $\frac{34}{100} u(2400) < \frac{33}{100} u(2500)$, in contrast with experiment 1, thereby violating the independence axiom in expected utility theory.
+
+    Allais paradox thus shows that people are not always rational players!
+\end{example}
+
+The \textbf{third rationality assumption} is: \textit{The players use consistently the laws of probability: in particular, they are consistent with the computation of the expected utilities, they are able to update probabilities according to Bayes rule...}
+
+\begin{example}[The beauty contest]
+    A group of players is asked to write an integer between 1 and 100. The mean $M$ is then calculated. The goal of the game is to write the number at the minimum distance from $qM$ , with $0 < q < 1$
+
+    A rational player will answer 1, independently of q. And he will probably lose!
+
+    For, let $q = \frac{1}{2}$ Given that $M \leq 100$, at the first step it is irrational to write a number greater $\frac{1}{2} \cdot 100$ which is the actual number to guess.
+
+    But then at the second step, since each player is rational and knows that also the other players are rational, one should repeat the previous reasoning so that it would be irrational to write a number greater than $\left(\frac{1}{2}\right)^2 \cdot 100$.
+
+    nd so on and so forth, until at step n it would be irrational to write a number greater than $\left(\frac{1}{2}\right)^n \cdot 100$, from which one concludes that the only rational choice is to write the smallest possible number, namely 1.
+
+    However, experiments show that the winning result is far higher than 1. In fact, it tends to grow with the value of the parameter $q$.
+\end{example}
+
+The \textbf{fourth rationality assumption} reads: \textit{The players are able to understand the consequences of all their actions, the consequences of this information on any other player, the consequences of the consequences and so on.}
+
+Finally, the \textbf{fifth rationality assumption} is: \textit{The players are able to use decision theory, whenever it is possible}.
+
+That is, given a set of alternatives $X$, and a utility function $u$ on $X$, each player seeks a $\overline{x} \in X$ such that
+\[
+    u(\overline{x}) \geq u(x) \quad \forall x \in X
+\]
+
+\section{Dominance}
+An immediate and important consequence of the rationality assumptions is the principle of elimination of strictly dominated strategies:
+
+\textbf{Principle of elimination of strictly dominated strategies}:
+
+A player does not take an action $a$ it she has available an action $b$ providing her a
+strictly better result, no matter what the other players do.
+
+\begin{example}
+    Player 1 action set is $\{18, \ldots, 30\}$, whereas Player 2 action set is {accept, refuse}.
+
+    If the preference of Player 2 is passing the exam with any grade, rather than repeating it, the action refuse is strictly dominated.
+
+    Observe that asking for a better grade is not an available action in this game
+\end{example}
+
+\subsection{Bimatrices}
+Representing 2-players games is possible by means of bimatrices. Conventionally, Player 1 chooses a row, while Player 2 chooses a column.
+
+This results in a pair of numbers, corresponding to the utilities of Player 1 and 2,
+respectively. The options can be summarized in a bimatrix, like the following:
+\[
+    \begin{pmatrix}
+        (8,8) & (2,7) \\
+        (7,2) & (0,0)
+    \end{pmatrix}
+\]
+
+Utilities are given in the form $(u_1, u_2)$, where $u_1$ is the utility of Player 1 and $u_2$ is the utility of Player 2.
+
+Since the second row is \textbf{strictly dominated} by the first, Player 1 selects the latter. Likewise, Player 2 selects the first column, which strictly dominates the second one
+
+Even if the Principle of elimination of strictly dominated actions may not be very informative, it has rather surprising consequences.
+
+\begin{example}[Uniqueness issue]
+    What are the rational outcomes of the following game?
+    \[
+        \begin{pmatrix}
+            (0,0) & (1,1) \\
+            (1,1) & (0,0)
+        \end{pmatrix}
+    \]
+    We formally do not know but it is obvious that the rational outcomes will be $(1, 1)$.
+
+    However, the actions prescribed by (first row, second column) and (second row, first column) yield the same preferred outcomes but they cannot be distinguished, thereby creating a \textbf{coordination problem} between the players!
+\end{example}
+\end{document}

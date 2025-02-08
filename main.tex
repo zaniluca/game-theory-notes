@@ -1,0 +1,98 @@
+\documentclass[10pt,a4paper,twoside]{book}
+
+\input{style/style.tex}
+
+\usepackage[
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=3cm,
+]{geometry}
+
+\usepackage{xr} % cross-referencing 
+\usepackage{subfiles}
+\usepackage{algorithm}
+\usepackage{nicefrac}
+\usetikzlibrary{calc} % Coordinate Calculations in TikZ for Extensive Form Games Trees
+
+% Glossaries
+\makenoidxglossaries
+\newacronym{TU}{TU}{Transferable Utility}
+\newacronym{LP}{LP}{Linear Programming}
+\newacronym{NEp}{NEp}{Nash Equilibrium Profile}
+
+% Custom commands
+\DeclareMathOperator{\co}{co\,}
+\DeclareMathOperator{\cl}{cl\,}
+\DeclareMathOperator{\interior}{int\,}
+\DeclareMathOperator{\BR}{BR}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\spt}{spt\;}
+
+\begin{document}
+
+\frontmatter
+
+\pagestyle{empty}
+
+% Title page
+\hypertarget{mytitlepage}{}
+\bookmark[dest=mytitlepage,level=chapter]{Title}
+
+\vspace*{\fill}
+\begin{center}
+    {\large \textsc{Lecture Notes of}}\\
+
+    \vspace*{0.4cm}
+
+    {\Huge
+        \textsc{Game Theory}}\\
+
+    \vspace*{1cm}
+
+    {\large From Professor Giovanni Valente's lectures}\\
+
+    \vspace*{1cm}
+
+    {\large
+        Author}\\
+    \vspace*{0.1cm}
+    \textsc{Luca Zani}\\
+
+    \vspace*{1cm}
+
+    Politecnico di Milano\\A.Y. 2024/2025
+\end{center}
+\vspace*{\fill}
+\clearpage
+
+% Copyright
+\hypertarget{mycopyright}{}
+\bookmark[dest=mycopyright,level=chapter]{Copyright}
+\input{copyright}
+\clearpage
+
+% Contents
+\cleardoublepage
+\pagestyle{toc}
+\hypertarget{mytoc}{}
+\bookmark[dest=mytoc,level=chapter]{\contentsname}
+\tableofcontents
+\cleardoublepage
+
+\pagestyle{fancy}
+\mainmatter
+
+\subfile{sections/rationality.tex}
+\subfile{sections/extensive.tex}
+\subfile{sections/zerosum.tex}
+\subfile{sections/nash.tex}
+\subfile{sections/repeated.tex}
+\subfile{sections/cooperative.tex}
+\subfile{sections/shapley.tex}
+
+\glsaddall
+\printnoidxglossary[type=\acronymtype,title=Glossary, toctitle=Glossary, nonumberlist]
+\cleardoublepage
+
+\end{document}

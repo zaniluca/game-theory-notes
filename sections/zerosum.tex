@@ -1,0 +1,596 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Zero Sum Games}
+\begin{definition}[Zero Sum Game]
+    A two-player zero-sum game in strategic form is the triplete $(X,Y, f: X \times Y \to \mathbb{R})$ where:
+    \begin{itemize}[noitemsep]
+        \item $X$ is the set of strategies for player 1
+        \item $Y$ is the set of strategies for player 2
+        \item $f(x, y)$ is what player 1 gets from player 2 when they play $X$ and $Y$ respectively
+    \end{itemize}
+    Given that f is the utility function of Pl1, by definition of zero sum games the utility function g of Pl2 must be
+    \[
+        g(x, y) = -f(x, y)
+    \]
+\end{definition}
+
+\section{Conservative Values}
+In the \textbf{finite case} $X = \{1,2,\ldots,n\}$, $Y = \{1,2,\ldots,m\}$ the game is described by a payoff matrix $P$, wherein Pl1 selects row $i$ while Pl2 selects column $j$. Player 1 can garantee a payoff of at least $v_1$ by selecting the optimal strategy $\overline{i}$, while player 2 can garantee a payoff of at most $v_2$ by selecting the optimal strategy $\overline{j}$. The \textbf{conservative values} are defined as:
+\begin{align*}
+    v_1 & = \max_{i} \min_{j} p_{ij} \\
+    v_2 & = \min_{j} \max_{i} p_{ij}
+\end{align*}
+
+\begin{example}
+    Consider the game:
+    \[
+        \begin{pmatrix}
+            4 & 3 & 2 \\
+            7 & 5 & 8 \\
+            8 & 2 & 0
+        \end{pmatrix}
+    \]
+    \begin{itemize}
+        \item $\min_j p_{1j} = 1, \min_j p_{2j} = 5, \min_j p_{3j} = 0 \Rightarrow v_1 = \max_i \min_j p_{ij} = 5$
+        \item $\max_i p_{i1} = 8, \max_i p_{i2} = 5, \max_i p_{i3} = 8 \Rightarrow v_2 = \min_j \max_i p_{ij} = 5$
+    \end{itemize}
+
+    Accordingly, the rational outcome is 5 and the rational behavior is ($\overline{i} = 2, \overline{j} = 2$)
+\end{example}
+
+Let's suppose:
+\begin{itemize}[noitemsep]
+    \item $v_1 = v_2 := v$
+    \item $\overline{i}$ is the row such that $p_{\overline{i}j} \geq v_1 = v$ for all $j$
+    \item $\overline{j}$ is the column such that $p_{i\overline{j}} \leq v_2 = v$ for all $i$
+\end{itemize}
+Then $p_{\overline{i}\overline{j}} = v$ is the rational outcome of the game
+\begin{remark}
+    $\overline{i}$ is an optimal strategy for Pl1, because she cannot \textbf{get more} than $v_2$, since $v_2$ is the conservative value of the second player.
+
+    $\overline{j}$ is an optimal strategy for Pl2, because she cannot \textbf{pay less} $v_1$, since $v_1$ is the conservative value of the first player.
+\end{remark}
+
+Now let's consider the triplet $(X,Y f: X \times Y \to \mathbb{R})$ where the sets $X$ and $Y$ are \textbf{not necessarily finite}.
+
+We can define the conservative values as:
+\begin{align*}
+    v_1 & = \sup_x \inf_y f(x,y) \\
+    v_2 & = \inf_y \sup_x f(x,y)
+\end{align*}
+If $v_1 = v_2$, we set $v = v_1 = v_2$ and we say that the game has value $v$.
+
+Now suppose:
+\begin{enumerate}[label=(\roman*)]
+    \item $v_1 = v_2 := v$
+    \item $\overline{x}$ is the strategy such that $f(\overline{x}, y) \geq v$ for all $y \in Y$
+    \item $\overline{y}$ is the strategy such that $f(x, \overline{y}) \leq v$ for all $x \in X$
+\end{enumerate}
+
+\textit{(ii) and (iii) are needed if the sets are infinite and not necessarily compact}. Then:
+
+\begin{itemize}
+    \item $v$ is the rational outcome of the game
+    \item $\overline{x}$ is an optimal strategy for Pl1
+    \item $\overline{y}$ is an optimal strategy for Pl2
+\end{itemize}
+
+We can equivalently say that:
+\begin{itemize}
+    \item $\overline{x}$ is optimal for Pl1 since it maximises the function $\alpha (x) = \inf_y f(x,y)$
+    \item $\overline{y}$ is optimal for Pl2 since it minimises the function $\beta (y) = \sup_x f(x,y)$
+\end{itemize}
+where $\alpha(x)$ is the value of the optimal choice of Pl2 if he knows that Pl1 plays $x$, and $\beta(y)$ is the value of the optimal choice of Pl1 if she knows that Pl2 plays $y$.
+
+\begin{proposition}[$v_1 \leq v_2$]
+    Let $X, Y$ be nonempty sets and $f: X \times Y \to \mathbb{R}$ be an arbitrary function. Then:
+    \[
+        v_1 = \sup_x \inf_y f(x,y) \leq \inf_y \sup_x f(x,y) = v_2
+    \]
+\end{proposition}
+\begin{proof}
+    By definition, for all $x,y$:
+    \[
+        \inf_y f(x,y) \leq f(x,y) \leq \sup_x f(x,y)
+    \]
+    So
+    \[
+        \alpha (x) = \inf_y f(x,y) \leq f(x,y) \leq \sup_x f(x,y) = \beta (y)
+    \]
+    Since for all $x \in X$ and $y \in Y$ it holds that $\alpha (x) \leq \beta (y)$, it follows that:
+    \[
+        \sup_x \alpha (x) \leq \inf_y \beta (y)
+    \]
+    Which is equivalent to $v_1 \leq v_2$
+\end{proof}
+
+\begin{example}
+    Order "Rock", "Scissors, "Paper" in the rows for Pl1 and in the columns for Pl2:
+    \[
+        P = \begin{pmatrix}
+            0  & 1  & -1 \\
+            -1 & 0  & 1  \\
+            1  & -1 & 0
+        \end{pmatrix}
+    \]
+    The conservative values are not the same: in fact, $v_1 =-1$ and $v_2 = 1$
+
+    There is no winning strategy since each player always plays randomly.
+
+    But if the game is repeated many times, the rational solution for both players is to play each option one-third of the times, so that in the long run their expected utility is zero.
+
+    By extending the game with \textbf{mixed strategies}, both conservative values become $0$
+\end{example}
+
+\section{Optimality in mixed strategies}
+Let's consider the finite case of a game $n \times m$ with mixed strategies, where the payoff matrix is $P = (p_{ij})$. The strategy space is defined as:
+\[
+    \Sigma_k = \left\{ x = (x_1, \ldots, x_k) \in \mathbb{R}^n : x_i \geq 0, \sum_{i=1}^k x_i = 1 \right\}
+\]
+Where $k = n$ for Pl1 and $k = m$ for Pl2. The expected utility for Pl1 is:
+\[
+    f(x,y) = \sum_{i=1}^n \sum_{j=1}^m x_i y_j p_{ij} = (x,Py)
+\]
+Where $p_{ij}$ is an element of $P$ corresponding to the utility of Pl1 when she plays
+row $i$ and Pl2 plays column $j$ (of course the utility of Pl2 is just the opposite)
+
+Thus the mixed extension of the initial game is: $(\Sigma_n, \Sigma_m, f(x,y) = (x, Py))$.
+
+To establish the existence of a rational outcome for the game, we need to prove:
+\begin{enumerate}[label=(\roman*)]
+    \item $v_1 = v_2$ (conservative values agree)
+    \item There exists $\overline{x}$ fulfilling:
+          \[
+              v_1 = \inf_y f(\overline{x}, y)
+          \]
+    \item There exists $\overline{y}$ fulfilling:
+          \[
+              v_2 = \sup_x f(x, \overline{y})
+          \]
+\end{enumerate}
+In the \textbf{finite case} optimal $\overline{x}$ and $\overline{y}$ always exist; thus existence is equivalent to coincidence of the conservative values (i).
+
+Let's first consider some definitions which will be useful in the proof of the existence of optimal strategies in mixed strategies.
+
+\begin{definition}[Convex set]
+    A set $C$ is convex if for all $x,y \in C$ and $\lambda \in [0,1]$ it holds that $\lambda x + (1-\lambda)y \in C$
+\end{definition}
+
+\begin{remark}
+    \leavevmode
+    \begin{itemize}
+        \item The intersection of convex sets is convex
+        \item A closed convex set with nonempty interior coincides with the closure of its internal points
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[Convex combination]
+    We shall call a convex combination of elements $x_1 , \ldots, x_n$ any vector $x$ of the form
+    \[
+        x = \sum_{i=1}^{n} \lambda_i x_i \quad \text{with} \quad \sum_{i=1}^{n} \lambda_i = 1 \quad \text{and} \quad \lambda_i \geq 0
+    \]
+\end{definition}
+\newpage % to avoid a bad page break
+\begin{definition}[Convex hull]
+    The convex hull of a set $C$, denoted by $\co C$ is:
+    \[
+        \co C = \bigcap _{A \in \mathcal{C}} A
+    \]
+    Where $\mathcal{C} = \{A: C \subset A \; \text{and $A$ is convex}\}$
+\end{definition}
+
+\begin{proposition}
+    The convex hull of a set $C$ is the set of all convex combinations of elements of $C$. Given a set $C$:
+    \[
+        \co C = \left\{ \sum_{i=1}^n \lambda_i c_i :  \lambda_i \geq 0, \sum_{i=1}^n \lambda_i = 1, c_i \in C \; \forall i, n \in \mathbb{N} \right\}
+    \]
+\end{proposition}
+
+When $C$ is a finite collection of points, its convex hull $\co C$ is called a \textbf{polytope}. (e.g. if $C$ contains three points, $\co C$ is the triangle (i.e. a polygon) with such points at its angles, which includes also all the points inside)
+
+\begin{theorem}
+    Given a closed convex set $C$ and a point $x$ outside $C$, there is a unique element $p \in C$ such that:
+    \[
+        \Vert x - p \Vert \leq \Vert c - x \Vert \quad \forall c \in C
+    \]
+\end{theorem}
+The projection $p$ is characterized by the following properties:
+\begin{enumerate}[label=(\roman*)]
+    \item $p$ is the closest point to $x$ in $C$ ($p \in C$)
+    \item $(x-p,c-p) \leq 0 \quad \forall c \in C$ (It forms an obtuse angle (in 2d) between $x$ and any $c \in C$)
+\end{enumerate}
+
+That is, $p$ is the closest point to $x$ belonging to the set $C$, and by the last property it forms an obtuse angle (in 2 dimensions) between $x$ and any $c\in C$.
+
+\begin{theorem}[First Separation Theorem]
+    Let $C$ be a convex proper subset of the Euclidean space $\mathbb{R}'$ and assume $x \in cl \; C^\complement$. Then, there is an element $x^* \neq 0 \in \mathbb{R}'$ such that:
+    \[
+        (x^*, c)  \geq (x^*, \overline{x}) \quad \forall c \in C
+    \]
+\end{theorem}
+Meaning a criterion to tell apart an external point from any internal point.
+
+\begin{proof}
+    Suppose $\overline{x} \notin \cl C$ and call $p$ its projection on $\cl C$. Based on the definition of projection, we have:
+    \[
+        (\overline{x} - p, c - p) \leq 0 \quad \forall c \in C
+    \]
+    Let $x^* = p - \overline{x} \neq 0$ ($p = \overline{x} + x^*$). Then:
+    \begin{align*}
+        (\overline{x} - p, c - p) & = (-x^*, c - \overline{x} - x^*)                                                    \\
+                                  & = \underbrace{(-x^*, -x^*)}_{{\Vert x^* \Vert}^2} + (-x^*, c - \overline{x}) \leq 0
+    \end{align*}
+    That is, $(x^*, c - \overline{x}) \geq {\Vert x^* \Vert}^2$. Since ${\Vert x^* \Vert}^2 > 0$ we obtain:
+    \[
+        (x^*, c)  \geq (x^*, \overline{x}) \quad \forall c \in C
+    \]
+    As $x^*$ appears in both sides, by renormalization we can choose $\Vert x^* \Vert = 1$. If $\overline{x} \in \cl C \setminus  C$ take a sequence  $\{x_n\} \subset C^\complement$ such that $x_n \to \overline{x}$. From the first step of the proof, we can find a norm 1 $x^*_n$ such that:
+    \[
+        (x^*_n, c) \geq (x^*_n, x_n) \quad \forall c \in C
+    \]
+    So, given that for some sub-sequence one has $x_n^* \to x^*$, taking the limit in the inequality we obtain:
+    \[
+        (x^*, c) \geq (x^*, \overline{x}) \quad \forall c \in C
+    \]
+\end{proof}
+\begin{corollary}
+    Let $C$ be a closed convex set in a Euclidean space, let $x$ be on the boundary of $C$.
+
+    Then there is a hyperplane containing $x$ and leaving all of $C$ in one of the halfspaces determined by the hyperplane.
+
+    Such an hyperplane is said to be an \textbf{hyperplane supporting} $C$ at $x$.
+\end{corollary}
+\begin{corollary}
+    Let $C$ be a closed convex set in a Euclidean space. Then $C$ is the intersection of all half-spaces containing it.
+\end{corollary}
+
+\begin{theorem}[Second Separation Theorem]
+    Let $A, C$ be closed convex subsets of $\mathbb{R}'$ such that $\interior A$ is nonempty and $\interior A \cap C = \emptyset$. Then, there are  $x^* \neq 0$ and $b \in \mathbb{R}'$ such that:
+    \[
+        (x^*, a) \geq b \geq (x^*, c) \quad \forall a \in A, c \in C
+    \]
+\end{theorem}
+Meaning: a criterion to determine whether a point is in $A$ or in $C$
+
+\begin{proof}
+    Since $\overline{x} = 0 \in (\interior A - C)^\complement$, by the First Separation Theorem with  $\overline{x} = 0$ there is an $x^* \neq 0$ such that:
+    \[
+        (x^*, x) \geq 0 \quad \forall x \in \interior A - C
+    \]
+    Thus, for $x = a - c$ by linearity we obtain:
+    \[
+        (x^*, a) \geq (x^*, c) \quad \forall a \in \interior A, c \in C
+    \]
+    By extension this implies:
+    \[
+        (x^*, a) \geq (x^*, c) \quad \forall a \in \cl \interior A = A, c \in C
+    \]
+\end{proof}
+$H = \{x : (x^*,x) = b\}$ is called the \textbf{separating hyperplane}: $A$ and $C$ are contained in the two different half-spaces generated by $H$
+
+\begin{theorem}
+    If a player knows the strategy played by the other player, she can always use a \textbf{pure strategy} to get the best outcome.
+\end{theorem}
+That is, once the choice of one player is fixed, the optimization becomes a linear problem over a simplex (recall that the utility function is bilinear)
+\begin{proof}
+    Consider e.g. the second player, who knows that the first one plays a mixed strategy $\overline{x}$. Then the second player must minimize the function
+    \[
+        f(\overline{x}, y) = (\overline{x}, Py)
+    \]
+    over the simplex $\Sigma_m$. The sought-after value is reached in at least one vertex $e_j$.
+
+    This corresponds to a pure strategy.
+\end{proof}
+
+Given the payoff matrix $P$, and by denoting the column vector $j$ with $p_{\cdot j}$ and the row vector $i$ with $p_{i \cdot}$, respectively, the payoff of the first player in the mixed extension of the game is
+\[
+    f(x,y) = (x, Py)
+\]
+The previous theorem thus implies that, in order to verify the existence of a rational outcome for the game, we need to prove that there are mixed strategies $\overline{x}$ and $\overline{y}$, as well as a value $v$ such that
+\begin{itemize}
+    \item $(\overline{x}, P_{e_j}) = (\overline{x}, p_{\cdot j}) \geq v \quad \forall j$
+    \item $(e_i, p_{i \cdot} \overline{y}) \leq v \quad \forall i$
+\end{itemize}
+
+where $e_j$ is the $j$-th strategy of the second player and $e_i$ is the $i$-th strategy of the
+first player.
+
+\begin{theorem}[Von Neumann's Theorem]
+    There always exists a rational outcome for a a finite, zero sum game with two players, as described by a payoff matrix P
+\end{theorem}
+\begin{proof}
+    Suppose without loss of generality that all $p_{ij}$ in the matrix $P$ are positive. Take the column vectors $p_1, \ldots, p_m$ of $\mathbb{R}^n$, and call $C$ their convex hull. define:
+    \[
+        Q_t = \{x \in \mathbb{R}^n : x_i \leq n\} \quad v = \sup \{t \geq 0 : Q_t \cap C = \emptyset\}
+    \]
+    Since int $Q_v \cap C = \emptyset$, the sets $Q_v$ and $C$ can be separated by an hyperplane: thus, there are coefficients $\overline{x_1}, \ldots, \overline{x_n}$ with some $\overline{x_i} \neq 0$ such that:
+    \[
+        (\overline{x}, u) = \sum_{i=1}^n \overline{x_i} u_i \leq b \leq \sum_{i=1}^n \overline{x_i} w_i = (\overline{x}, w) \quad \forall u = (u_1, \ldots, u_n) \in Q_v, w = (w_1, \ldots, w_n) \in C
+    \]
+    Then it follows that:
+    \begin{enumerate}
+        \item All $\overline{x_i}$'s must be non-negative, and hence we can assume $\sum_i \overline{x_i} = 1$
+        \item $b = v$ since $\overline{v} = (v, \ldots, v) \in Q_v$, from $(\overline{x}, \overline{v}) = \sum_i \overline{x_i}v = v \cancel{\sum_i \overline{x_i}} = v$. We get $b \geq v$; but, if $b > v$, by taking a small $a > 0$ such that $b \geq v+a$ then we have $\sup \{\sum_{i=1}^n \overline{x_i} u_i : u \in Q_{v+a}\} < b$ which implies $Q_{v+a} \cap C \neq \emptyset$, contradicting the definition of $v$
+        \item $Q_v \cap C = \emptyset$. Let $\overline{w} \in Q_v \cap C$ so that $\overline{w} = \sum_{j=1}^{m} \overline{y_j}p_j$ (Given that $C$ is convex) for some $\overline{y} = (\overline{y_1}, \ldots, \overline{y_m}) \in \Sigma_m$. Since $\overline{w} \in Q_v$ it follows $\overline{w_i} \leq v$ for all $i$
+    \end{enumerate}
+    We now prove that $\overline{x}$ is optimal for the first player, that $\overline{y}$ is optimal for the second player, and that $v$ is the value of the game:\\
+    As for the first player: since $(\overline{x}, w) \geq v \; \forall w \in C$ by the separation result, and since every column $p_j$ is in $C$, we have:
+    \[
+        (\overline{x}, p_j) \geq v \quad \forall j
+    \]
+    Now consider $\sum_{j=1}^m \overline{y_j}p_j = w \in Q_v \cap C$ as before, then $w_i = \overline{y} p_i$. Since $w \in Q_v$ we have $w_i \leq v$ for all $i$, so:
+    \[
+        v \geq w_i = \overline{y} p_i
+    \]
+\end{proof}
+
+Von Neumann theorem assures that, \textbf{even when there are no solutions of a finite zero-sum game in pure strategies}, there always exist:
+\begin{itemize}
+    \item a mixed strategy for Pl1, namely a probability distribution $x = (x_1,\ldots,x_n)$ over her possible pure strategies (rows), such that for all columns $j$
+          \[
+              (x, p_{\cdot j}) = \sum_{i=1}^n x_i p_{ij} \geq v
+          \]
+    \item a mixed strategy for Pl2, namely a probability distribution $y = (y_1,\ldots,y_m)$ over his possible pure strategies (columns), such that for all rows $i$
+          \[
+              (y, p_{i \cdot}) = \sum_{j=1}^m y_j p_{ij} \leq v
+          \]
+\end{itemize}
+The common bound $v$ is the value of the game obtained in mixed strategies. Pl1 tries to make $v$ as large as possible, whereas Pl2 as small as possible!
+
+Von Neumann proof can be efficiently used to find rational outcomes of payoff matrices than can be reduced to matrices where one player has only two strategies (in this case, the separation line is easy to visualize).
+
+However, in higher dimensions this procedure becomes more complicated, since it is not clear when and where the set $Q_t$ meets $C$.
+
+Therefore, one must use another method: that is, \textbf{linear programming}!
+
+\newpage
+
+\section{Linear Programming}
+Pl1 must choose a probability distribution $x = (x_1, \ldots, x_n \in \Sigma_n$ in order to \textbf{maximize} v with the following constraints:
+\begin{align*}
+    (x, p_{\cdot 1}) & = x_1 p_{11} + \cdots + x_n p_{n1} \geq v \\
+                     & \vdots                                    \\
+    (x, p_{\cdot j}) & = x_1 p_{1j} + \cdots + x_n p_{nj} \geq v \\
+                     & \vdots                                    \\
+    (x, p_{\cdot m}) & = x_1 p_{1m} + \cdots + x_n p_{nm} \geq v
+\end{align*}
+It is a \textbf{linear maximization problem} where we need to find the value $v$ and we do
+not know the vector $x$.
+
+Similarly Pl2 must choose a probability distribution $y = (y_1, \ldots, y_m) \in \Sigma_m$ in order to \textbf{minimize} v with the following constraints:
+\begin{align*}
+    (y, p_{1 \cdot}) & = y_1 p_{11} + \cdots + y_m p_{1m} \leq w \\
+                     & \vdots                                    \\
+    (y, p_{i \cdot}) & = y_1 p_{i1} + \cdots + y_m p_{im} \leq w \\
+                     & \vdots                                    \\
+    (y, p_{m \cdot}) & = y_1 p_{n1} + \cdots + y_m p_{nm} \leq w
+\end{align*}
+It is a \textbf{linear minimization problem} where we need to find the value $w$ and we do not know the vector $y$.
+
+In matrix form we can write the problems as:
+\[
+    \begin{cases}
+        \max_{x,v} v     \\
+        P^T x \geq v 1_m \\
+        x \geq 0 \; (1,x) = 1
+    \end{cases}
+    \qquad
+    \begin{cases}
+        \min_{y,w} w  \\
+        Py \leq w 1_n \\
+        y \geq 0 \; (1,y) = 1
+    \end{cases}
+\]
+where 1 is a vector of right dimensions whose components are all 1's.
+\begin{definition}[Duality]
+    The following pair of linear Programming probles are said to be in duality:
+    \begin{center}
+        \small \textbf{Form 1}
+    \end{center}
+    \[
+        (P) \;
+        \begin{cases}
+            \min(c,x) = \min \sum c_i x_i \\
+            Ax \geq b                     \\
+            x \geq 0
+        \end{cases}
+        \qquad
+        (D) \;
+        \begin{cases}
+            \max(b,y) = \max \sum b_i y_i \\
+            A^T y \geq c                  \\
+            y \geq 0
+        \end{cases}
+    \]
+    \begin{center}
+        \small \textbf{Form 2}
+    \end{center}
+    \[
+        (P) \;
+        \begin{cases}
+            \min(c,x) = \min \sum c_i x_i \\
+            Ax \geq b                     \\
+        \end{cases}
+        \qquad
+        (D) \;
+        \begin{cases}
+            \max(b,y) = \max \sum b_i y_i \\
+            A^T y = c                     \\
+            y \geq 0
+        \end{cases}
+    \]
+    Where $A \in \mathbb{R}^{m \times n}$ and the vectors $b,y \in \mathbb{R}^m$ $c,x \in \mathbb{R}^n$
+\end{definition}
+The min problem is called \textbf{primal} problem and the max is called \textbf{dual} problem.
+
+Easy examples show that, given two problems in duality, there are three options:
+\begin{itemize}
+    \item The primal and the dual have both optimal solutions and the values coincide
+    \item The primal is unbounded and the dual is infeasible
+    \item The primal is infeasible and the dual is unbounded
+\end{itemize}
+Here, 'feasibility' means that there exists $x$ satisfying the conditions in $(P)$; or, respectively, that there exists $y$ satisfying the conditions in $(D)$.
+
+\begin{theorem}[Weak duality]
+    Let $v$ be the value of the primal $\min$ problem and $V$ the value of the dual $\max$ problem Then:
+    \[
+        v \geq V
+    \]
+\end{theorem}
+
+\begin{proof}[Proof (Form 1)]
+    \[
+        v = (c,x) \geq (A^T y, x) = (y, Ax) \geq (y,b) = V
+    \]
+
+    \textit{For the second form the proof is the same just by making the first $\geq$ a $=$}
+\end{proof}
+
+\begin{theorem}[Strong duality]
+    If the primal and dual problems are feasible, then both problems have optimal solutions $\overline{x}, \overline{y}$ and the optimal values coincide, that is:
+    \[
+        v = (c, \overline{x}) = (b, \overline{y}) = V
+    \]
+    In this case we say that there is no duality gap
+
+    \begin{itemize}
+        \item If the primal is feasible and the dual is infeasible, then $v = V = -\infty$
+        \item If the primal is infeasible and the dual is feasible, then $v = V = \infty$
+        \item If both the primal and the dual are infeasible, then $v = \infty > V = -\infty$
+    \end{itemize}
+\end{theorem}
+\begin{corollary}
+    If one problem is feasible and has an optimal solution, then also the dual problem is feasible and has solutions. Moreover there is no duality gap.
+\end{corollary}
+
+\begin{theorem}[Complementary Conditions]
+    Let $\overline{x}$,$\overline{y}$ be primal and dual feasible. Then $\overline{x}$,$\overline{y}$ are simultaneously optimal if and only if:
+    \[
+        (CC) \;
+        \begin{cases}
+            (\forall i = 1, \ldots, n) \quad \overline{x}_i > 0 \Rightarrow (A^T \overline{y})_i = c_i \\
+            (\forall j = 1, \ldots, m) \quad \overline{y}_j > 0 \Rightarrow (A \overline{x})_j = b_j
+        \end{cases}
+    \]
+\end{theorem}
+\begin{proof}
+    Recall that $(c,x) \geq (A^T y, x) \geq (y, Ax) \geq (b,y)$ from the weak duality. If $\overline{x}$ and $\overline{y}$ are optimal, then all inequalities must be equalities from the strong duality:
+    \[
+        (c,\overline{x}) = (A^T \overline{y}, \overline{x}) = (\overline{y}, A\overline{x}) = (b,\overline{y})
+    \]
+    This is equivalent to:
+    \[
+        (A^T \overline{y} - c, \overline{x}) = 0 \quad \text{and} \quad (\overline{y}, A\overline{x} - b) = 0
+    \]
+    Since $\overline{x}, \overline{y} \geq 0$ and $A \overline{x} \geq b, A^T \overline{y} \leq c$ the complementary conditions are satisfied.
+\end{proof}
+\begin{example}
+    Consider
+    \[
+        \begin{cases}
+            \min x_1 + x_2     \\
+            2 x_1 + x_2 \geq 2 \\
+            x_1 + 2 x_2 \leq 3 \\
+            x_1, x_2 \geq 0
+        \end{cases}
+    \]
+    Its dual is:
+    \[
+        \begin{cases}
+            \max 2y_1 - 2y_2  \\
+            2y_1 - y_2 \leq 1 \\
+            y_1 - 2y_2 \leq 1 \\
+            y_1, y_2 \geq 0
+        \end{cases}
+    \]
+    We have $v = 1$, $(\overline{x}_1, \overline{x}_2) = (1,0)$, $V = 1$, $(\overline{y}_1, \overline{y}_2) = (\frac{1}{2},0)$.
+
+    Check for complementary conditions:
+    \[
+        \overline{y}_1 = \frac{1}{2} > \implies 2 \overline{x}_1 - \overline{x}_2 = 2, \overline{x}_1 = 1 > 0 \implies 2 y_1 + y_2 = 1
+    \]
+\end{example}
+
+\section{Symmetric Games}
+\begin{definition}
+    An $n \times n$ matrix $P$ with elements $p_{ij}$ is \textbf{antisymmetric} if $p_{ij} = - p_{ji}$ for all $i,j = 1,\ldots,n$. A finite zero-sum game is \textbf{fair} if the associated matrix is antisymmetric
+\end{definition}
+
+\begin{proposition}
+    if $P = (p_{ij})$ is antisymmetric the conservative value is $v = 0$ and $\overline{x}$ is an optimal strategy for Pl1 if and only if it is optimal for Pl2
+\end{proposition}
+
+\begin{proof}
+    Recall that  $P^T = - P$ if $P$ is antisymmetric. Then, since:
+    \[
+        (Px,x) = (x, P^T x) = - (x, Px) = -(Px,x)
+    \]
+    One has $f(x,y)=0 \; \forall x$. This implies $v_1 \leq 0, v_2 \geq 0$, therefore $v = 0$.
+
+    If $\overline{x}$ is optimal for the first player, then:
+    \[
+        (\overline{x}, Py) \geq 0, \quad \forall y \in \Sigma_n
+    \]
+    So that $(P^T \overline{x}, y) \geq 0$ which by the fact that $P$ is antisymmetric becomes
+    \[
+        (P \overline{x}, y) \leq 0 \quad \forall y \in \Sigma_n
+    \]
+    Thus, $\overline{x}$ is optimal for the second player
+\end{proof}
+
+In order to find optimal strategies in fair games, we need to solve the system of inequalities
+\begin{align*}
+    (x, p_{11}) & = x_1 p_{11} + \cdots + x_n p_{n1} \geq 0 \\
+                & \vdots                                    \\
+    (x, p_{1j}) & = x_1 p_{1j} + \cdots + x_n p_{nj} \geq 0 \\
+                & \vdots                                    \\
+    (x, p_{1n}) & = x_1 p_{1m} + \cdots + x_n p_{nn} \geq 0
+\end{align*}
+with extra conditions:
+\[
+    x_i \geq 0, \quad \sum_{i=1}^n x_i = 1
+\]
+\begin{example}
+    Find the optimal strategies of the following fair game:
+    \[
+        P = \begin{pmatrix}
+            0  & 3  & -2 & 0  \\
+            -3 & 0  & 0  & 4  \\
+            2  & 0  & 0  & -3 \\
+            0  & -4 & 3  & 0
+        \end{pmatrix}
+    \]
+    Since there are zeros, the problem can be broken down into two parts.
+
+    Taking the first and the fourth columns leads to the inequalities
+    \[
+        -3 x_1 + 2 x_3 \geq 0, \quad 4 x_2 - 3 x_3 \geq 0
+    \]
+    Recall also that $x_2, x_3 > 0$ and $x_2 + x_3 \leq 1$.
+
+    Taking the second and the third columns leads to the inequalities
+    \[
+        3 x_1 - 4 x_4 \geq 0, \quad -2 x_1 + 3 x_4 \geq 0
+    \]
+    Recall also that $x_1, x_4 > 0$ and $x_1 + x_4 \leq 1$.
+\end{example}
+
+\subsection{Towards the indifference principle}
+In the system (with $v$ \textbf{unknown})
+\begin{align*}
+     & x_1 p_{11} + \cdots + x_n p_{n1} \geq v \\
+     & \vdots                                  \\
+     & x_1 p_{1j} + \cdots + x_n p_{nj} \geq v \\
+     & \vdots                                  \\
+     & x_1 p_{1m} + \cdots + x_n p_{nm} \geq v
+\end{align*}
+when is a \textbf{strict inequality} (>) possible?
+
+Suppose $\overline{x}$ is optimal for Pl1 and $\overline{x}_1 p_{1,j} + \cdots + \overline{x}_n p_{n,j} > v$.
+
+Then Pl2 never plays column $j$, i.e. he will assign probability zero to it. Otherwise Pl1 would get more than $v$ playing $\overline{x}$.
+
+But every strategy to which Pl2 assigns positive probability gives the same value
+to Pl1: hence, she is \textbf{indifferent} to all such strategies used by Pl2 at equilibrium.
+\end{document}

@@ -1,0 +1,122 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{The Shapley value and power indices}
+Let $\phi: \mathcal{G}(N) \to \mathbb{R}^n$ be a one point solution. here is a list of desirable properties:
+\begin{enumerate}
+    \item (\textbf{Efficiency}) $\sum_{i=1}^n \phi_i(v) = v(N)$ for every $v \in \mathcal{G}(N)$
+    \item (\textbf{Symmetry}) If $v \in \mathcal{G}(N)$ is a game such that $v(A \cup \{i\}) = v(A \cup \{j\})$ for every $A \subseteq N \setminus \{i,j\}$, then $\phi_i(v) = \phi_j(v)$
+    \item (\textbf{Null Player}) If $v \in \mathcal{G}(N)$ and $i \in N$ are such that $v(A) = v(A \cup \{i\})$ for every $A$, then $\phi_i(v) = 0$
+    \item (\textbf{Additivity}) If $v,w \in \mathcal{G}(N)$ then $\phi(v + w) = \phi(v) + \phi(w)$
+\end{enumerate}
+
+\begin{theorem}[Shapley Theorem]
+    Let $\sigma: \mathcal{G}(N) \to \mathbb{R}^n$ be defined by:
+    \[
+        \sigma_i(v) = \sum_{S \in 2^{N \setminus \{i\}}} \frac{s!(n-s-1)!}{n!} [v(S \cup \{i\}) - v(S)]
+    \]
+    Then $\sigma$ satisfies the properties of efficiency, symmetry, null player and additivity.
+
+    Conversely, if $\tilde{\sigma}$ is a one point solution satisfying the properties of efficiency, symmetry, null player and additivity, then $\tilde{\sigma}$ = $\sigma$.
+\end{theorem}
+
+In other words, there exists a unique one point solution satisfying the properties of efficiency, symmetry, null player and additivity. We call it the \textbf{Shapley value}.
+
+\begin{definition}[Marginal Contribution]
+    The term
+    \[
+        m_i (v,S) := v (S \cup \{i\}) - v(S)
+    \]
+    is called the marginal contribution of player $i$ to coalition $S \cup \{i\}$
+\end{definition}
+The Shapley value is a weighted sum of all marginal contributions of the players.
+
+\begin{note}[Interpretation of the weights]
+    Suppose the players decide to meet (at some place and at some time), where they arrive at the meeting in a random order. Choose a coalition $S$ and a player $i \notin S$. Then the ratio
+    \[
+        \frac{s!(n-s-1)!}{n!}
+    \]
+    is the probability that player $i$ arrives at the meeting when exactly the $s$ members of the coalition $S$ (i.e. no other player) are already there.
+
+    For example if $n = 8$, the situation where $S$ has 3 members already at the meeting and player $i$ arrives 4th is graphicaly represented as:
+    \[
+        \underbrace{\bullet \bullet \bullet}_{s} \underbrace{\bullet}_{i} \underbrace{\bullet \bullet \bullet \bullet}_{n-s-1}
+    \]
+\end{note}
+
+\begin{proof}[Efficiency]
+    Let's prove that $\sum_{i=1}^n \sigma_i(v) = v(N)$. Consider the generic term $v(S \cup \{i\}) - v(S)$. The term $v(N)$ appears $n$ times, once for every player, When $S = N \setminus \{i\}$. As $s = n-1$ its coefficient is:
+    \[
+        \frac{(n-1)!(n-n)!}{n!} = \frac{\cancel{(n-1)!}\cancelto{1}{0!}}{n\cancel{(n-1)!}} = \frac{1}{n}
+    \]
+    Consider now any other coalition $T \neq N$. The term $v(T)$ appears both with positive and negative coefficients:
+    \begin{itemize}
+        \item The positive coefficient $\frac{(t-1)!(n-t)!}{n!}$ appears $t$ times, once for every player $i \in S$ when $S = T \setminus \{i\}$: hence its contribution is $\frac{t!(n-t)!}{n!}$
+        \item The negative coefficient $\frac{t!(n-t-1)!}{n!}$ appears $n-t$ times, once for every player $i \notin S$ when $S = T$: hence its contribution is $-\frac{t!(n-t-1)!}{n!}$
+    \end{itemize}
+    Thus in the sum $\sum_{i=1}^n \sigma_i(v)$ all the terms cancel out except for $v(N)$
+\end{proof}
+\begin{proof}[Symmetry]
+    \begin{align*}
+        \sigma_i(v) & = \sum_{S \in 2^{N \setminus \{i\cup j\}}} \frac{s!(n-s-1)!}{n!} [v(S \cup \{i\}) - v(S)]                             \\
+                    & \quad + \sum_{S \in 2^{N \setminus \{i\cup j\}}} \frac{(s+1)!(n-s-2)!}{n!} [v(S \cup \{i \cup j\}) - v(S \cup \{j\})] \\
+        \sigma_j(v) & = \sum_{S \in 2^{N \setminus \{i\cup j\}}} \frac{s!(n-s-1)!}{n!} [v(S \cup \{j\}) - v(S)]                             \\
+                    & \quad + \sum_{S \in 2^{N \setminus \{i\cup j\}}} \frac{(s+1)!(n-s-2)!}{n!} [v(S \cup \{i \cup j\}) - v(S \cup \{i\})]
+    \end{align*}
+    So $\sigma_i(v) = \sigma_j(v)$ if $v(A \cup \{i\}) = v(B \cup \{i\})$
+\end{proof}
+\begin{proof}[Uniqueness ($\tilde{\sigma} = \sigma$)]
+    Consider a unanimity game $u_A$:
+    \begin{itemize}[noitemsep]
+        \item Players not belonging to $A$ are null players: thus $\sigma$ assigns zero to them
+        \item Players belonging to $A$ are symmetric, and so $\sigma$ must assign the same value to both.
+        \item $\sigma$ is efficient
+        \item $\sigma_i (u_A) = \frac{1}{\abs{A}}$ if $i \in A$ and $\sigma_i (u_A) = 0$ otherwise
+    \end{itemize}
+    Then $\phi$ is uniquely determined by the basis of $\mathcal{G}(N)$ given in terms of the
+    unanimity games.
+
+    The same argument applies to the game $c \cdot u_A$ for $c \in \mathbb{R}$.
+
+    Because of the additivity axiom, at most one function satisfies the properties.
+\end{proof}
+The null player property 3 and the additivity property 4 are obvious.
+
+\section{Simple Games}
+In the case of simple games, the Shapley value becomes:
+\[
+    \sigma_i(v) = \sum_{A \in \mathcal{A}_i} \frac{a!(n-a-1)!}{n!}
+\]
+where $\mathcal{A}_i$ is the set of all minimal winning coalitions containing player $i$. in this case $i$ is called a \textbf{crucial player}.
+
+\subsection{Power indices for simple games}
+In simple games the Shapley value \textbf{measures the fraction of power of every player}.
+
+In order to measure the relative power of the players in a simple game, the requirement of efficiency is not mandatory, hence coalitions could even form in a different way from the case of the Shapley value
+\begin{definition}[Probabilistic power index]
+    A probabilistic power index $\psi$ on the set of simple games is
+    \[
+        \psi_i(v) = \sum_{S \in 2^{N \setminus \{i\}}} p_i (S) m_i (v,S)
+    \]
+    where $p_i$ is a probability measure on $2^{N \setminus \{i\}}$
+\end{definition}
+\begin{definition}[Semivalue]
+    A probabilistic power index $\psi$ on the set of simple games is a semivalue if there exists a vector $(p_0,\ldots,p_{n-1})$ such that
+    \[
+        \psi_i(v) = \sum_{S \in 2^{N \setminus \{i\}}} p_s m_i (v,S)
+    \]
+\end{definition}
+\begin{remark}
+    Since the index is probabilistic, the two conditions must hold
+    \begin{itemize}
+        \item $p_s \geq 0$
+        \item $\sum_{n=0}^{n-1} \binom{n-1}{s} p_s = 1$
+    \end{itemize}
+    If $p_s > 0$ for all $s$, then semivalue is called \textbf{regular}.
+\end{remark}
+These are some examples of semivalues:
+\begin{itemize}
+    \item The Shapley value is a semivalue with $p_s = \frac{s!(n-s-1)!}{n!}$
+    \item The Banzhaf value is a semivalue with $p_s = \frac{1}{2^{n-1}}$
+\end{itemize}
+\end{document}

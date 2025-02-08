@@ -1,0 +1,574 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\chapter{Cooperative Games}
+\begin{definition}
+    A cooperative game is a pair $(N,V)$ where $N$ is the set of all players and
+    \[
+        V : 2^N \to \mathbb{R}^n
+    \]
+    is a multifunction such that $V(A) \subseteq \mathbb{R}^A$ for any \textbf{coalition} $A \in \mathcal{P}(N)$ formed by a subset of all players
+\end{definition}
+\begin{note}\
+    \begin{itemize}
+        \item $2^N$ is the collection of all subsets of the finite set $N$, such that $\abs{N} = n$.
+        \item $V(A)$ is the set of the aggregate utilities of the players in coalition $A$: $x = (x_i)_{i\in A} \in V(A)$ if the players in $A$ can guarantee utility $x_i$ to every $i \in A$, by acting by themselves in the game.
+        \item If $V(A)$ represents costs rather utilities, all inequalities must be reversed.
+    \end{itemize}
+\end{note}
+\begin{definition}[Transferable utility]
+    A transferable utility is a game where the payoff of each player can be divided among the players:
+    \[
+        v: 2^N \to \mathbb{R}^n
+    \]
+    such that $v(\emptyset) = 0$
+\end{definition}
+The fact that the utility $v$ (also called \textbf{side-payment function}) takes on real values reflects the idea that the aggregated utility $v(A)$ can be freely divided among the members of the coalition $A$.
+
+Any \gls{TU} game is also a cooperative game, in fact, the value $v(A)$ can be replaced by a subset $V(A)$ of $\mathbb{R}^A$, in such a way that:
+\[
+    V(A) = \{ (x_i)_{i \in A} : \sum_{i \in A} x_i \leq v(A)\}
+\]
+\begin{example}[Seller and buyers]
+    \label{ex:seller-buyers}
+    There are one seller and two potential buyers for some given item. Player 1 is the seller, whose evaluation of the item is $a$. Players 2 and 3 are the buyers, and they evaluate the item $b$ and $c$, respectively. It is supposed that $a <b <c$. The \gls{TU} game is:
+    \[
+        \begin{cases}
+            v(\{1\}) = a, v(\{2\}) = v(\{3\}) = 0          \\
+            v(\{1,2\}) = b, v(\{1,3\}) = c, v(\{2,3\}) = 0 \\
+            v(N) = c
+        \end{cases}
+    \]
+\end{example}
+\begin{example}[Glove game]
+    $N$ players have a glove each: in particular, some of them have a right glove, whereas the others a left glove. Since gloves can only be sold in pair, say for 1 euro, the aim of the game is to form pairs.
+
+    To formalize the game, we introduce a partition $\{L,R\}$ of $N= \{1,2,\ldots,n\}$ and define the utility function for the set $S$.
+    \[
+        v(S) = \min \{\abs{S \cap L}, \abs{S \cap R}\}
+    \]
+    Here is the case where Pl1 and Pl2 have a right glove and Pl3 a left glove:
+    \[
+        \begin{cases}
+            v(\{1\}) = v(\{2\}) = v(\{3\}) = 0          \\
+            v(\{1,2\}) = 0, v(\{1,3\}) = v(\{2,3\}) = 1 \\
+            v(N) = 1
+        \end{cases}
+    \]
+\end{example}
+\begin{example}[Children game]
+    Three players vote one of their names. If one of them gets at least two votes, she earns 1000 euros. They can make binding agreements about how to share the money. If none of the players gets at least two votes, the 1000 euros are lost.
+
+    The game is formalized as follow:
+    \[
+        \begin{cases}
+            v(A) = 1000 & \text{if } \abs{A} \geq 2 \\
+            v(A) = 0    & \text{otherwise}
+        \end{cases}
+    \]
+\end{example}
+\begin{example}[Weighted majority game]
+    The game $[q; w_1,\ldots,w_n]$ models a situation where in $n$ parties in a Parliament are supposed to take a decision. Party $i$ has $w_i$ members, and for a proposal to be approved it needs at least $q$ votes.
+    \[
+        v(A) =
+        \begin{cases}
+            1 & \text{if } \sum_{i \in A} w_i \geq q \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    For example, in the UN council a decision needs the votes of the 5 permanent members (with weight 7) plus at least 4 of the other 10 non permanent members (with weight 1). Hence, one has
+    \[
+        v = [39; 7,7,7,7,7,1,1,1,1,1,1,1,1,1,1]
+    \]
+\end{example}
+\begin{example}[Bankruptcy game]
+    A bankruptcy game is defined by the triple $B = (N,c,E)$, with a set of creditors $N= \{1,\ldots,n\}$, the list $c = \{c_1,\ldots,c_n\}$ of credits ci claimed by each player $i$,
+    and the estate $E$. The bankruptcy condition is then $E < \sum_{i \in N} c_i = C$.
+
+    A pessimistic view of the game would be such that
+    \[
+        v_P = \max \left(0, E - \sum_{i \in N \setminus S} c_i \right) \qquad \forall S \subseteq N
+    \]
+    An optimistic, but less realistic view would be such that
+    \[
+        v_O = \min \left(E, \sum_{i \in S} c_i \right) \qquad \forall S \subseteq N
+    \]
+\end{example}
+\begin{example}[Airport game]
+    A collection of airlines flying $N$ airplanes needs a new runway close to some city. The set of airplanes is partitioned into groups of similar size $N1_,N_2,\ldots, N_k$, so that to each $N_i$ there corresponds the cost $c_i$ of the runway construction (in fact, the bigger the airplane, the longer and therefore more expensive the runway). The utility function is:
+    \[
+        v (S) = \max\{c_i : i \in S\} \qquad \forall S \subseteq N
+    \]
+\end{example}
+
+\begin{definition}[Peer game]
+    Let $N = \{1,\ldots,n\}$ be the set of players and $T = (N,A)$ a directed rooted tree. Each agent $i$ has an individual potential $v_i$ which represents the gain that player $i$ can generate if all players at the higher levels of the hierarchy cooperate with him.
+
+    For every $i \in N$, we denote by $S(i)$ the set of superiors of $i$, namely the set of all agents in the unique directed path connecting 1 to $i$. a peer game is a game $v$ such that:
+    \[
+        v(S) = \sum_{i \in N : S(i) \subseteq S} v_i
+    \]
+\end{definition}
+\begin{example} Here is an example of a peer game:
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[draw] (1) {1};
+            \node[draw] (2) [below of=1] {2};
+            \node[draw] (3) [below left of=2] {3};
+            \node[draw] (4) [below right of=2] {4};
+            \node[draw] (5) [below left of=3] {5};
+
+            \draw (1) -- (2);
+            \draw (2) -- (3);
+            \draw (2) -- (4);
+            \draw (3) -- (5);
+        \end{tikzpicture}
+    \end{center}
+    We use this logic to determinate the utility of each coalition:
+    \[
+        \begin{cases}
+            v(A) = 0   & \text{if } 1 \notin A               \\
+            v(A) = v_1 & \text{if } 1 \in A \land 2 \notin A \\
+        \end{cases}
+    \]
+    So:
+    \begin{align*}
+        v(\{1, 2\})       & = v(\{1, 2, 5\}) = v_1 + v_2          \\
+        v(\{1, 2, 4\})    & = v(\{1, 2, 4, 5\}) = v_1 + v_2 + v_4 \\
+        v(\{1, 2, 3, 4\}) & = v_1 + v_2 + v_3 + v_4               \\
+        v(\{1, 2, 3, 5\}) & = v_1 + v_2 + v_3 + v_5               \\
+        v(N)              & = v_1 + v_2 + v_3 + v_4 + v_5
+    \end{align*}
+\end{example}
+
+Let $\mathcal{G}(N)$ be the set of all games with $N$ players as the set of players.
+
+Fix a list $S_1,\ldots,S_{2^{n-1}}$ of coalitions. A vector $(v_1,\ldots,v_{2^{n-1}})$ represents a game, setting $v_i = v(S_i)$. Thus:
+\begin{proposition}
+    The set $\mathcal{G}(N)$ is isomorphic to $\mathbb{R}^{2^N - 1}$
+\end{proposition}
+\begin{proposition}
+    Given the set $\{u_A : A\subseteq N\}$ of the \textbf{unanimity games}
+    \[
+        u_A(T) =
+        \begin{cases}
+            1 & \text{if } A \subseteq T \\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    is a basis for the space $\mathcal{G}(N)$
+\end{proposition}
+\begin{definition}
+    A game $v$ is \textbf{additive} if
+    \[
+        v(A \cup B) = v(A) + v(B) \qquad \forall A,B \subseteq N, A \cap B = \emptyset
+    \]
+    while it is \textbf{superadditive} if
+    \[
+        v(A \cup B) \geq v(A) + v(B) \qquad \forall A,B \subseteq N, A \cap B = \emptyset
+    \]
+\end{definition}
+\begin{note}
+    The set of the additive games is a vector space of dimension $n$.
+\end{note}
+All games introduced as examples so far are \underline{superadditive}. Superadditive games are games where the grand coalition forms
+\begin{definition}[Simple games]
+    A game $v \in \mathcal{G}(N)$ is simple if:
+    \begin{itemize}
+        \item $v(S) \in \{0,1\}$ for every non-empty coalition $S$
+        \item $A \subseteq C$ implies $v(A) \leq v(C)$
+        \item $v(N) = 1$
+    \end{itemize}
+    \textit{$v(A) = 1$ means that the coalition $A$ is winning, while $v(A) = 0$ means that the coalition $A$ is losing}
+\end{definition}
+Weighted majority games and unanimity games are simple games. Simple games are characterized by the list of all minimal winning coalitions
+\begin{definition}[Minimal winning coalition]
+    A  coalition $A$ in the simple game $v$ is called minimal winning coalition if
+    \begin{enumerate}
+        \item $v(A) = 1$
+        \item $B \nsubseteq A$ implies $v(B) = 0$
+    \end{enumerate}
+\end{definition}
+
+\section{Solution Concepts}
+\begin{definition}
+    A \textbf{solution vector} for $v \in \mathcal{G}(N)$ is a vector $(x_1, \ldots, x_n)$, while a \textbf{solution} is a multifunction
+    \[
+        S: \mathcal{G}(N) \to \mathbb{R}^N
+    \]
+\end{definition}
+The solution vector $x = (x_1,\ldots,x_n)$ assigns utility (or cost) $x_i$ to player $i$.
+
+A solution assigns a set of solution vectors, possibly empty, to every game.
+
+\subsection{Imputation}
+\vspace{0.25cm}
+\begin{definition}[Imputation]
+    The solution $I : \mathcal{G}(N) \to \mathbb{R}^N$ such that $x \in I(v)$ if:
+    \begin{enumerate}
+        \item $x_i \geq v(\{i\})$ for every $i \in N$ \textit{(for every player)}
+        \item $\sum_{i \in N} x_i = v(N)$
+    \end{enumerate}
+    is called imputation
+\end{definition}
+Condition 1 states that player $i$ will not participate if the solution assigns her a
+value $x_i$ less than what she would be able to earn by herself, i.e. $v(\{i\})$.
+
+Condition 2 can be splitted into two intequalities:
+\begin{enumerate}
+    \item \textbf{Feasibility} $\sum_{i = 1}^N x_i \leq v(N)$ assures that if the grand coalition is formed the amount available to the players is $v(N)$
+    \item \textbf{Efficiency} $\sum_{i = 1}^N x_i \geq v(N)$ assures that the amount available to the players is at least $v(N)$ says that that the overall amount will be effectively distributed among all the players
+\end{enumerate}
+\begin{note}\
+    \begin{itemize}
+        \item If a game satisfies $v(N) \geq \sum_i v (\{i\})$, then the imputation is nonempty.
+        \item If $v$ is additive then $I(v) = \{v(1), \ldots, v(N)\}$, so its \underline{unique}.
+    \end{itemize}
+\end{note}
+\begin{proposition}
+    The imputation set $I(v)$ is a polytope (i.e. the smallest closed convex set containing a finite number of points)
+\end{proposition}
+The imputation set is nonempty if the game is superadditive (superadditivity of $v$ is only sufficient but not necessary for nonemptyness of $I(v)$), and it reduces to a singleton if the game is additive
+
+\subsection{Core}
+\vspace{0.25cm}
+\begin{definition}[Core]
+    The core of a game $v$ is the solution $C: \mathcal{G}(N) \to \mathbb{R}^N$ such that:
+    \[
+        C(v) = \left\{ x \in \mathbb{R}^N : \sum_{i=1}^{N} x_i = v(N) \land \sum_{i \in S} x_i \geq v(S) \; \forall S \subseteq N \right\}
+    \]
+\end{definition}
+The core is a subset of the set of imputations.
+
+Imputations are efficient distributions of utilities accepted by all individual players, while core vectors are efficient distributions of utilities accepted by all coalitions.
+
+\begin{example}
+    \label{ex:seller-buyers-core}
+    The core of the seller-buyers game
+    \[
+        \begin{cases}
+            v(\{1\}) = a, v(\{2\}) = v(\{3\}) = 0          \\
+            v(\{1,2\}) = b, v(\{1,3\}) = c, v(\{2,3\}) = 0 \\
+            v(N) = c
+        \end{cases}
+    \]
+    is the set of all imputations $(x_1, x_2, x_3)$ such that
+    \[
+        \begin{cases}
+            x_1 \geq a, x_2 \geq 0, x_3 \geq 0                   \\
+            x_1 + x_2 \geq b, x_1 + x_3 \geq c, x_2 + x_3 \geq 0 \\
+            x_1 + x_2 + x_3 = c
+        \end{cases}
+    \]
+    \[
+        C(v) = \{(x, 0, c-x) : \; b \leq x \leq c\}
+    \]
+\end{example}
+\begin{example}
+    The core of the glove game
+    \[
+        \begin{cases}
+            v(\{1\}) = v(\{2\}) = v(\{3\}) = 0          \\
+            v(\{1,2\}) = 0, v(\{1,3\}) = v(\{2,3\}) = 1 \\
+            v(N) = 1
+        \end{cases}
+    \]
+    is the set of all imputations $(x_1, x_2, x_3)$ such that
+    \[
+        \begin{cases}
+            x_1, x_2, x_3 \geq 0                                 \\
+            x_1 + x_2 \geq 0, x_1 + x_3 \geq 1, x_2 + x_3 \geq 1 \\
+            x_1 + x_2 + x_3 = 1
+        \end{cases}
+    \]
+    \[
+        C(v) = \{(0, 0, 1)\}
+    \]
+    This can be extended to any glove game: if $l$ people have left gloves and $r$ people have right gloves, with $r >l$, then
+    \[
+        C(v) = \{(\underbrace{1, \ldots, 1}_{l \text{ times}}, \underbrace{0, \ldots, 0}_{r \text{ times}})\}
+    \]
+\end{example}
+\newpage
+\begin{example}
+    \label{ex:children-game-core}
+    The core of the children game
+    \[
+        \begin{cases}
+            v(A) = 1000 & \text{if } \abs{A} \geq 2 \\
+            v(A) = 0    & \text{otherwise}
+        \end{cases}
+    \]
+    is the set of all imputations $(x_1, x_2, x_3)$ such that
+    \[
+        \begin{cases}
+            x_1, x_2, x_3 \geq 0                                          \\
+            x_1 + x_2 \geq 1000, x_1 + x_3 \geq 1000, x_2 + x_3 \geq 1000 \\
+            x_1 + x_2 + x_3 = 1000
+        \end{cases}
+    \]
+    \[
+        C(v) = \emptyset
+    \]
+\end{example}
+\begin{proposition}
+    The core $C(v)$ is a \textbf{polytope} (i.e. the smallest closed convex set containing a finite number of points)
+\end{proposition}
+\begin{note}\
+    \begin{itemize}
+        \item The core reduces to the \textbf{singleton} $(v(\{1\}),\ldots,v(\{n\}))$ if $v$ is \textbf{additive}.
+        \item Superadditive games can have an empty core.
+    \end{itemize}
+\end{note}
+\begin{definition}[Veto player]
+    In a game $v$, a player $i$ is said to be a veto player if $v(A) = 0$ for every $A$ such that $i \notin A$
+\end{definition}
+\begin{theorem}[Sufficient Condition for the Core to be Non-Empty]
+    Let $v$ be a simple game. Then $C(v) \neq \emptyset$ if and only if there is at least one veto player. When a veto player exists, the core is the closed convex polytope with the vectors $(0, \ldots , 1, \ldots , 0)$ as extreme points, where 1 corresponds to the veto player
+\end{theorem}
+\begin{proof}
+    If there is no veto player, then for every $i$ there is an $A_i$ such that $i \notin A_i$ and $v(A_i) = 1$ ($A_i$ is winning). In particular $N \setminus \{i\}$ is a winning coalition for every $i$. Suppose $(x_i, \ldots, x_n) \in C(v)$. then it follows that:
+    \[
+        \sum_{j \neq i} x_j \geq \sum_{j \in A_i} x_j = 1 \quad \forall i
+    \]
+    However, by summing up the above inequalities from $1$ to $n$ we obtain
+    \[
+        (n-1) \sum_{j=1}^n x_j = n
+    \]
+    Which yields a contradiction with $\sum_{j=1}^{n} x_j = 1$. Conversely, any imputation assigning zero to the non-veto players must be in the core
+\end{proof}
+\begin{theorem}
+    Given a game $v$, the following \gls{LP} problem
+    \begin{align*}
+        \text{(1)} & \quad \min \sum_{i=1}^n x_i                                    \\
+        \text{(2)} & \quad \sum_{i \in S} x_i \geq v(S) \quad \forall S \subseteq N
+    \end{align*}
+    has always a nonempty set of solutions $C$. The core $C(v)$ is nonempty and $C (v) = C$ if and only if the optimal value of the \gls{LP} is $v(N)$
+\end{theorem}
+\begin{remark}
+    The value $V$ of the \gls{LP} problem is $V \geq v (N)$, due to the constraint $\sum_i x_i \geq v(N)$; thus for every $x$ fulfilling constraint (2) one has $\sum_{i=1}^{n} x_i \geq v(N)$
+\end{remark}
+
+We may now leverage dualities to find the core of a game.
+
+\begin{theorem}
+    $C(v) \neq \emptyset$ if and only if there exists a vector $(\lambda_S)_{S \subseteq N}$ such that:
+    \[
+        \lambda_S \geq 0 \forall S \subseteq N \quad \text{and} \quad \sum_{S: i \in S \subseteq N} \lambda_S = 1 \quad \forall i \in N
+    \]
+    satisfies also the following inequality:
+    \[
+        \sum_{S \subseteq N} \lambda_S v(S) \leq v(N)
+    \]
+\end{theorem}
+Note that the coefficients $\lambda_S$ can be interpreted as indicating how much (in percentage) a given coalition $S$ represents the players.
+
+So, the theorem suggests that, no matter what quota the players contribute to the coalition, the weighted values must not exceed the overall amount of utility.
+\begin{proof}
+    The \gls{LP} problem (1),(2) problem has the following matrix form
+    \[
+        \begin{cases}
+            \min \sum_{i=1}^n c_i x_i \\
+            Ax \geq b
+        \end{cases}
+    \]
+    where $c = (1, \ldots, 1)$, $b = (v(\{1\}), v(\{2\}), \ldots, v(\{1, 2\}), \ldots, v(\{n\}))$ and $A$ is $(2^n - 1) \times n$ matrix whose rows are colitions and columns are players:
+
+    $A_{ij} = 1$ if player $j$ is in coalition $i$, $A_{ij} = 0$ otherwise.
+
+    The dual takes the form
+    \[
+        \begin{cases}
+            \max \sum_{S \subseteq N} \lambda_S v(S) \\
+            \lambda_S \geq 0                         \\
+            \sum_{S:i\in S \subseteq N} \lambda_S = 1 \quad \forall i
+        \end{cases}
+    \]
+    Since the primal has (at least) one finite solution, the \textbf{strong duality theorem} states that that is true also for the dual and there is no duality gap. Thus the core $C(v)$ is nonempty if and only if the value $V$ of the dual problem is such that $V \leq v(N)$.
+\end{proof}
+\begin{example}
+    Here is an example with 3 players:
+
+    Primal:
+    \[
+        \begin{cases}
+            \min x_1 + x_2 + x_3              \\
+            x_i \geq v(\{i\}) \quad i = 1,2,3 \\
+            x_1 + x_2 \geq v(\{1,2\})         \\
+            x_1 + x_3 \geq v(\{1,3\})         \\
+            x_2 + x_3 \geq v(\{2,3\})         \\
+            x_1 + x_2 + x_3 \geq v(N)
+        \end{cases}
+    \]
+    Dual:
+    \[
+        \begin{cases}
+            \max \lambda_{\{1\}} v(\{1\}) + \lambda_{\{2\}} v(\{2\}) + \lambda_{\{3\}} v(\{3\}) + \lambda_{\{1,2\}} v(\{1,2\}) \\ \qquad + \lambda_{\{1,3\}} v(\{1,3\}) + \lambda_{\{2,3\}} v(\{2,3\}) + \lambda_N v(N) \\
+            \lambda_S \geq 0 \quad \forall S                                                                                   \\
+            \lambda_{\{1\}} + \lambda_{\{1,2\}} + \lambda_{\{1,3\}} + \lambda_N = 1                                            \\
+            \lambda_{\{2\}} + \lambda_{\{1,2\}} + \lambda_{\{2,3\}} + \lambda_N = 1                                            \\
+            \lambda_{\{3\}} + \lambda_{\{1,3\}} + \lambda_{\{2,3\}} + \lambda_N = 1
+        \end{cases}
+    \]
+\end{example}
+\begin{definition}[Balanced family]
+    A family $(S_1, \ldots ,S_m)$ of coalitions is called balanced in case there exists $\lambda= (\lambda_1,\ldots,\lambda_m)$ such that $\lambda i > 0 \forall i = 1,\ldots, m$ and, for every $i \in N$
+    \[
+        \sum_{k: i \in S_k} \lambda_k = 1
+    \]
+    $\lambda$ is called a balancing vector of the family
+\end{definition}
+\begin{note}
+    The set of $\lambda_S$ is a convex polytope with a finite number of extreme points
+\end{note}
+For every player $i$ , such coefficients indicate how much she contributes to each coalition $S_k$ in the family, so that their sum over all coalitions is 1.
+\begin{example}
+    A partition of $N$ is a balanced family, with balancing vector made by all 1’s.
+
+    For $N= \{1,2,3,4\}$ the family $(\{1,2\},\{1,3\},\{2,3\},\{4\})$ is balanced with balancing vector $(\frac{1}{2}, \frac{1}{2},\frac{1}{2}, 1)$.
+
+    For $N= \{1,2,3\}$ the family $(\{1\},\{2\},\{3\},N)$ is balanced and every vector of the form $(p,p,p,1-p)$, with $0 <p <1$, is a balancing vector.
+
+    For $N= \{1,2,3\}$ the family $(\{1,2\},\{1,3\},\{3\})$ is not balanced, since Pl3 enters in a coalition with Pl1 but she also forms a coalition on her own.
+\end{example}
+\begin{remark}
+    Given a vector $\lambda= (\lambda)_S$ fulfilling the inequalities defining the dual constraint set
+    \[
+        \begin{cases}
+            \lambda_S \geq 0 \\
+            \sum_{S:i\in S \subseteq N} \lambda_S = 1 \quad \forall i
+        \end{cases}
+    \]
+    the positive coefficients in $\lambda$ are the balancing vectors of a balanced family
+\end{remark}
+\begin{example}
+    Let $N= \{1,2,3\}$:
+    \begin{itemize}
+        \item $\{\frac{1}{5}, \frac{1}{5},\frac{1}{5},\frac{1}{5},\frac{1}{5},\frac{1}{5},\frac{2}{5}\}$ corresponds to the balanced family $(\{1\},\{2\},\{3\},\{1,2\},\{1,3\},\{2,3\},N)$.
+        \item $\{0,0,0, \frac{2}{5},\frac{2}{5},\frac{2}{5}, \frac{1}{5}\}$ corresponds to the balanced family $(\{1,2\},\{1,3\},\{2,3\},N)$.
+    \end{itemize}
+\end{example}
+\begin{definition}[Minimal balancing family]
+    A minimal balancing family is a balancing family for which there is no sub-family that is balanced
+\end{definition}
+That is, it is not possible to erase a coalition without destroying balancedness.
+\begin{lemma}
+    A balanced family is minimal if and only if its balancing vector is unique
+\end{lemma}
+\begin{theorem}
+    The positive coefficients of the extreme points of the constraint set
+    \[
+        \begin{cases}
+            \lambda_S \geq 0 \\
+            \sum_{S:i\in S \subseteq N} \lambda_S = 1 \quad \forall i
+        \end{cases}
+    \]
+    are the balancing vectors of the minimal balanced coalitions
+\end{theorem}
+To find the extreme points of the dual constraint set it is enough to find balanced families with unique balancing vector
+\begin{remark}
+    The partitions of $N$ are minimal balanced families. The relevant condition
+    \[
+        \sum_{S \subseteq N} \lambda_S v(S) \leq v(N)
+    \]
+    is automatically fullfilled if the game is superadditive
+\end{remark}
+\begin{example}
+    In the case of 3 players the minimal balanced families are characterized as follows:
+    \begin{itemize}
+        \item $(1,1,1,0,0,0,0)$ with balanced family $(\{1\},\{2\},\{3\})$
+        \item $(1,0,0,0,0,1,0)$ with balanced family $(\{1\},\{2,3\})$
+        \item $(0,1,0,0,1,0,0)$ with balanced family $(\{2\},\{1,3\})$
+        \item $(0, 0, 1, 1, 0, 0, 0)$ with balanced family $(\{3\}, \{1, 2\})$
+        \item $(0, 0, 0, 0, 0, 0, 1)$ with balanced family $(N)$
+        \item $(0, 0, 0, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, 0)$ with balanced family $(\{1, 2\}, \{1, 3\}, \{2, 3\})$
+    \end{itemize}
+    Only in the last case the balanced family is not a partition (subsets are not disjoint).
+\end{example}
+\begin{remark}
+    If the game is \textbf{superadditive}, only one condition is to be checked: the core is non empty provided that
+    \[
+        v(\{1, 2\}) + v(\{1, 3\}) + v(\{2, 3\}) \leq 2 v(N)
+    \]
+\end{remark}
+The number of extreme points grows rapidly w.r.t. the number of players. For instance, for superadditive games of 4 players thirteen conditions must be checked.
+\subsection{Nucleolus}
+\vspace{0.25cm}
+\begin{definition}[Excess]
+    Let $v$ be some \gls{TU} game. The excess of a coalition A over the imputation x is
+    \[
+        e(A,x) = v(A) - \sum_{i \in A} x_i
+    \]
+\end{definition}
+$e(A,x)$ is a measure of the \textbf{dissatisfaction} of the coalition $A$ with respect to the assignment of the imputation $x$
+\begin{remark}
+    An imputation $x$ of the game $v$ belongs to $C(v)$ if and only if $e(A,x) \leq 0$ for all $A$
+\end{remark}
+\begin{definition}[Lexicographic vector]
+    The lexicographic vector attached to the imputation x is the $(2^n - 1)$-th dimensional vector $\theta(x)$ such that
+    \begin{enumerate}
+        \item $\theta_i(x) = e(A,x)$ for some A $\subseteq N$
+        \item $\theta_1(x) \geq \theta_2(x) \geq \ldots \geq \theta_{2^n - 1}(x)$
+    \end{enumerate}
+    It arranges the excesses of the coalition over the imputation x in decreasing order
+\end{definition}
+\begin{definition}[Nucleolus]
+    The nucleolus solution is the solution $\nu : \mathcal{G}(N) \to \mathbb{R}^n$ such that $\nu(v)$ is the set of the imputations $x$ such that $\theta(x) \leq_L \theta(y)$, for all imputations $y$ of the game $v$.
+\end{definition}
+\begin{remark}
+    $x \leq_L y$ if $x=y$ or there exists $j$ such that $x_i = y_i$ for $i < j$ and $x_j < y_j$.
+
+    \begin{note}
+        That is, the nucleolus minimizes the excesses.
+    \end{note}
+
+    $\leq_L$ is the lexicographic order, and defines a total order in any Euclidean space.
+\end{remark}
+\begin{example}
+    Three players children game $v$:
+    \[
+        \begin{cases}
+            v(A) = 1 & \text{if } \abs{A} \geq 2 \\
+            v(A) = 0 & \text{otherwise}
+        \end{cases}
+    \]
+    Suppose $x = (a,b,1-a-b)$, with $a,b \geq 0$ and $a+b \leq 1$. The colation $S$ complaining (i.e $e(S, \emptyset) > 0$) are those with two members.
+    \begin{align*}
+        e(\{1,2\},x) & = 1 - (a + b) \\
+        e(\{1,3\},x) & = b           \\
+        e(\{2,3\},x) & = a
+    \end{align*}
+    We must \textit{minimize}
+    \[
+        \max \{1-a-b, b, a\}
+    \]
+    which gives the nucleolus $\nu = (\nicefrac{1}{3}, \nicefrac{1}{3}, \nicefrac{1}{3})$ as the result.
+
+    \textit{Remember that in this game the core is empty}
+\end{example}
+\begin{theorem}
+    For every \gls{TU} game $v$ with nonempty imputation set, the nucleolus $\nu(v)$ is singleton.
+\end{theorem}
+Thus the nucleolus is a one point solution
+\begin{proposition}
+    Suppose $v$ is such that $C(v) \neq \emptyset$. Then $\nu(v) \in C(v)$
+\end{proposition}
+\begin{proof}
+    For all $x \in C(v)$, by definition of core $\theta_1(x) \leq 0$. Since the nucleolus minimizes the excesses, we have $\theta_1(\nu(v)) \leq 0$. Then $\nu(v)$ is in the core.
+\end{proof}
+\begin{example}
+    In the case of the \hyperref[ex:seller-buyers-core]{seller-buyers game}
+    \[
+        \begin{cases}
+            v(\{1\}) = a, v(\{2\}) = v(\{3\}) = 0          \\
+            v(\{1,2\}) = b, v(\{1,3\}) = c, v(\{2,3\}) = 0 \\
+            v(N) = c
+        \end{cases}
+    \]
+    we previously found that the core is $C(v) = \{(x, 0, c-x) : \; b \leq x \leq c\}$, from the previous proposition we know that the nucleolus is in the core, so by calculating the excesses:
+    \[
+        e(\{1,2\}) = b-x \quad e(\{2,3\}) = x-c
+    \]
+    we find that the nucleolus is $\nu = (\frac{b+c}{2}, 0, \frac{c-b}{2}) \in C(v)$
+\end{example}
+\end{document}
