@@ -1,0 +1,42 @@
+name: Build and Release PDF
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install texlive-full latexmk
+
+      - name: Build PDF
+        run: make pdf
+
+      - name: Get commit SHA
+        id: sha
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: out/main.pdf
+          name: game-theory-notes-${{ steps.sha.outputs.sha }}
+          tag_name: ${{ steps.sha.outputs.sha }}
+          draft: false
+          prerelease: false
+          body: |
+            Game Theory Notes build from commit ${{ steps.sha.outputs.sha }}
+
+            This is an automatically generated release containing the latest PDF build.
