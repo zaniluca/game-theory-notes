@@ -27,14 +27,7 @@ jobs:
       - name: Install TeX Live
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            texlive-base \
-            texlive-latex-base \
-            texlive-latex-extra \
-            texlive-latex-recommended \
-            texlive-fonts-recommended \
-            texlive-science \
-            latexmk
+          sudo apt-get install -y texlive-full latexmk
 
       - name: Build PDF
         run: make pdf
