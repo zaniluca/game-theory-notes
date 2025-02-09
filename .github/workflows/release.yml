@@ -36,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: out/main.pdf
-          name: game-theory-notes-${{ steps.sha.outputs.sha }}
+          name: "Game Theory notes @${{ steps.sha.outputs.sha }}"
           tag_name: ${{ steps.sha.outputs.sha }}
           draft: false
           prerelease: false
